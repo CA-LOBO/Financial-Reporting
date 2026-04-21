@@ -1,0 +1,1238 @@
+<h2 class="sr-only">CA Final Financial Reporting Study Notes – Chapter-wise reference tool</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#f4f6fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.7;color:#1a1a2e}
+.app{display:flex;flex-direction:column;min-height:100vh}
+.hdr{background:#1e3a5f;color:#fff;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+.hdr-title{font-size:15px;font-weight:500}
+.hdr-sub{font-size:11px;opacity:0.6;margin-top:1px}
+.search-wrap{position:relative;flex:1;max-width:260px}
+.search-wrap input{width:100%;padding:7px 12px 7px 30px;border:none;border-radius:20px;background:rgba(255,255,255,0.15);color:#fff;font-size:13px;outline:none}
+.search-wrap input::placeholder{color:rgba(255,255,255,0.45)}
+.si{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px;opacity:0.55}
+.body-row{display:flex;flex:1;min-height:0}
+.sb{width:210px;min-width:210px;background:#fff;border-right:1px solid #e4e8f0;padding:14px 0;flex-shrink:0}
+.sb-sec{padding:8px 16px 4px;font-size:10px;font-weight:500;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;cursor:pointer;color:#475569;transition:background 0.12s;border-right:3px solid transparent}
+.sb-item:hover{background:#f1f5f9}
+.sb-item.active{background:#eff6ff;color:#1e3a5f;font-weight:500;border-right-color:#1e3a5f}
+.sb-item.soon{color:#c0c9d6;cursor:default}
+.sb-dot{width:7px;height:7px;border-radius:50%;background:#dde3ec;flex-shrink:0}
+.sb-dot.done{background:#1e3a5f}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;background:#f4f6fb}
+.sec-nav{background:#fff;border-bottom:1px solid #e4e8f0;padding:10px 16px;display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-shrink:0;position:sticky;top:0;z-index:10}
+.sec-nav::-webkit-scrollbar{display:none}
+.sec-btn{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid #dde3ec;background:#fff;color:#475569;transition:all 0.15s;white-space:nowrap}
+.sec-btn:hover{border-color:#2563aa;color:#2563aa}
+.sec-btn.active{background:#1e3a5f;border-color:#1e3a5f;color:#fff}
+.sec-body{padding:22px 26px;display:none}
+.sec-body.visible{display:block}
+.ch-title{font-size:20px;font-weight:500;color:#1e3a5f;margin-bottom:20px;line-height:1.3}
+.card{background:#fff;border:1px solid #e4e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:500;color:#1e3a5f;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em}
+.note-list{list-style:none;padding:0}
+.note-list li{padding:5px 0 5px 16px;position:relative;font-size:14px;color:#334155;border-bottom:0.5px solid #f1f5f9}
+.note-list li:last-child{border-bottom:none}
+.note-list li::before{content:"";position:absolute;left:4px;top:13px;width:5px;height:5px;border-radius:50%;background:#2563aa}
+.imp{border-left:3px solid #2563aa;background:#eff6ff;padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13px;color:#1e3a5f}
+.warn{border-left:3px solid #d97706;background:#fefce8;padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13px;color:#78350f}
+.exam{border-left:3px solid #059669;background:#f0fdf4;padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13px;color:#064e3b}
+.imp strong,.warn strong,.exam strong{display:block;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;opacity:0.65}
+.kt{background:#dbeafe;color:#1e40af;padding:1px 6px;border-radius:4px;font-size:0.9em;font-weight:500}
+.nt{background:#fce7f3;color:#9d174d;padding:1px 6px;border-radius:4px;font-size:0.9em;font-weight:500}
+.gt{background:#dcfce7;color:#166534;padding:1px 6px;border-radius:4px;font-size:0.9em;font-weight:500}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+.tbl th{background:#1e3a5f;color:#fff;padding:8px 10px;text-align:left;font-weight:500;font-size:12px}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid #e8eaf0;vertical-align:top;color:#334155}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#f8faff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.mini-card{background:#f8faff;border:1px solid #dbeafe;border-radius:8px;padding:12px}
+.mc-title{font-size:11px;font-weight:500;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
+.mc-val{font-size:13px;color:#334155}
+.phase-box{background:#f8faff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;margin:10px 0}
+.phase-box h4{font-size:13px;font-weight:500;color:#1e40af;margin-bottom:8px}
+.flow-row{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin:10px 0}
+.flow-step{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:500;color:#1e3a5f;flex-shrink:0;margin:4px 0}
+.flow-arr{color:#94a3b8;padding:0 5px;font-size:12px}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:6px}
+.qc{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px;text-align:center}
+.qc-num{font-size:24px;font-weight:500;color:#1e3a5f}
+.qc-lbl{font-size:11px;color:#64748b;margin-top:3px}
+.divider{height:1px;background:#e8eaf0;margin:14px 0}
+.coming{text-align:center;padding:70px 20px;color:#94a3b8}
+.coming-icon{font-size:32px;margin-bottom:14px}
+.coming h3{font-size:17px;font-weight:500;color:#64748b;margin-bottom:6px}
+.coming p{font-size:13px;line-height:1.6}
+</style>
+
+<div class="app">
+<div class="hdr">
+  <div><div class="hdr-title">CA Final – Financial Reporting</div><div class="hdr-sub">Study Notes · ICAI Syllabus</div></div>
+  <div class="search-wrap"><span class="si">🔍</span><input type="text" placeholder="Search notes…" oninput="doSearch(this.value,event)"></div>
+</div>
+
+<div class="body-row">
+<div class="sb">
+  <div class="sb-sec">Chapters</div>
+  <div class="sb-item active" onclick="setChapter(this,1)"><span class="sb-dot done"></span>Ch 1 · Intro to Ind AS</div>
+  <div class="sb-item" onclick="setChapter(this,2)"><span class="sb-dot done"></span>Ch 2 · Conceptual Framework</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 3 · Ind AS 101</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 4 · Ind AS 1</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 5 · Ind AS 7</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 6 · Ind AS 8 & 10</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 7 · Revenue (115)</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 8 · Financial Instruments</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 9 · Consolidation</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 10 · PP&E & Impairment</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 11 · Leases (116)</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 12 · Employee Benefits</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 13 · Business Combinations</div>
+  <div class="sb-item soon"><span class="sb-dot"></span>Ch 14 · Other Standards</div>
+</div>
+
+<div class="main" id="mainArea">
+
+<div id="ch1Wrap">
+<div class="sec-nav" id="secNav">
+  <button class="sec-btn active" onclick="showSec(0)">Overview</button>
+  <button class="sec-btn" onclick="showSec(1)">Old AS</button>
+  <button class="sec-btn" onclick="showSec(2)">Limitations</button>
+  <button class="sec-btn" onclick="showSec(3)">IFRS History</button>
+  <button class="sec-btn" onclick="showSec(4)">Need & Benefits</button>
+  <button class="sec-btn" onclick="showSec(5)">Convergence vs Adoption</button>
+  <button class="sec-btn" onclick="showSec(6)">Development Process</button>
+  <button class="sec-btn" onclick="showSec(7)">Transition to Ind AS</button>
+  <button class="sec-btn" onclick="showSec(8)">All 39 Ind AS</button>
+  <button class="sec-btn" onclick="showSec(9)">Roadmap – Companies</button>
+  <button class="sec-btn" onclick="showSec(10)">Roadmap – NBFC & Others</button>
+  <button class="sec-btn" onclick="showSec(11)">Statutory Provisions</button>
+  <button class="sec-btn" onclick="showSec(12)">Schedule III & GN</button>
+</div>
+
+<!-- S0: Overview -->
+<div class="sec-body visible" id="s0">
+  <div class="ch-title">Chapter 1: Introduction to Indian Accounting Standards</div>
+  <div class="quick-grid">
+    <div class="qc"><div class="qc-num">39</div><div class="qc-lbl">Ind AS notified by MCA</div></div>
+    <div class="qc"><div class="qc-num">27</div><div class="qc-lbl">Old AS issued by ICAI</div></div>
+    <div class="qc"><div class="qc-num">2009</div><div class="qc-lbl">G20 convergence commitment</div></div>
+    <div class="qc"><div class="qc-num">2015</div><div class="qc-lbl">Ind AS Rules notified</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">What are Accounting Standards?</div>
+    <ul class="note-list">
+      <li>Set of documents laying down principles for <span class="kt">recognition</span>, <span class="kt">measurement</span>, <span class="kt">presentation</span> and <span class="kt">disclosure</span> of accounting transactions in financial statements</li>
+      <li>Objective: Standardize diverse accounting policies, eliminate non-comparability, enhance reliability of financial statements</li>
+      <li>Financial statements must be understandable, relevant, reliable and comparable</li>
+      <li><span class="kt">ASB (Accounting Standards Board)</span> of ICAI — established 1977 — is India's national standard-setter</li>
+      <li>Process: ASB finalizes → recommends to <span class="kt">NFRA</span> → Government through <span class="kt">MCA</span> notifies → published in Gazette of India</li>
+    </ul>
+    <div class="imp"><strong>Key Note</strong>NFRA (National Financial Reporting Authority) replaced NACAS (National Advisory Committee on Accounting Standards). NACAS was under Companies Act 1956; NFRA is under Companies Act 2013.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Chapter Topics at a Glance</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Topic</th><th>Use the button ↑ to navigate</th></tr>
+      <tr><td>1</td><td>Old AS & their applicability</td><td>Old AS</td></tr>
+      <tr><td>2</td><td>Why AS failed — limitations</td><td>Limitations</td></tr>
+      <tr><td>3</td><td>IASC → IASB → IFRS timeline</td><td>IFRS History</td></tr>
+      <tr><td>4</td><td>India's need + benefits of global standards</td><td>Need & Benefits</td></tr>
+      <tr><td>5</td><td>Convergence vs adoption distinction</td><td>Convergence vs Adoption</td></tr>
+      <tr><td>6</td><td>How Ind AS are developed and notified</td><td>Development Process</td></tr>
+      <tr><td>7</td><td>Transition history, numbering, structure</td><td>Transition to Ind AS</td></tr>
+      <tr><td>8</td><td>Complete list of all 39 Ind AS</td><td>All 39 Ind AS</td></tr>
+      <tr><td>9</td><td>Phase I & II applicability, net worth</td><td>Roadmap – Companies</td></tr>
+      <tr><td>10</td><td>NBFC, banking, insurance, mutual funds</td><td>Roadmap – NBFC & Others</td></tr>
+      <tr><td>11</td><td>Companies Act sections + SEBI rules</td><td>Statutory Provisions</td></tr>
+      <tr><td>12</td><td>Division II structure + GN 15 key points</td><td>Schedule III & GN</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- S1: Old AS -->
+<div class="sec-body" id="s1">
+  <div class="ch-title">Indian Scenario Prior to Ind AS — Old AS Applicability</div>
+  <div class="card">
+    <ul class="note-list">
+      <li>As on February 2022, ICAI had issued <span class="kt">27 Accounting Standards (AS)</span></li>
+      <li>Applicable to: (a) companies not following Ind AS, (b) SMCs, (c) non-corporate entities (4 levels)</li>
+      <li>Non-corporate entities classified as Level I, II, III and IV based on size criteria</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">AS Applicability Summary</div>
+    <div style="overflow-x:auto">
+    <table class="tbl">
+      <tr><th>AS No.</th><th>Name</th><th>Companies (Non-Ind AS)</th><th>SMCs</th><th>Non-Corp Level I</th><th>Non-Corp Level II/III</th></tr>
+      <tr><td>AS 1</td><td>Disclosure of Accounting Policies</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>AS 2</td><td>Valuation of Inventories</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>AS 3</td><td>Cash Flow Statement</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+      <tr><td>AS 5</td><td>Net Profit/Loss, Prior Period Items</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>AS 10</td><td>Property, Plant & Equipment</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes (disclosure exemptions)</td></tr>
+      <tr><td>AS 12</td><td>Accounting for Government Grants</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>AS 15</td><td>Employee Benefits</td><td>No</td><td>With exemptions</td><td>Yes</td><td>Yes (with exemptions)</td></tr>
+      <tr><td>AS 16</td><td>Borrowing Costs</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>AS 17</td><td>Segment Reporting</td><td>No</td><td>No</td><td>Yes</td><td>No</td></tr>
+      <tr><td>AS 18</td><td>Related Party Disclosure</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No (Level III & IV)</td></tr>
+      <tr><td>AS 19</td><td>Leases</td><td>No</td><td>With exemptions</td><td>Yes</td><td>Yes (disclosure exemptions)</td></tr>
+      <tr><td>AS 20</td><td>Earnings per Share</td><td>No</td><td>With exemptions</td><td>Yes</td><td>No</td></tr>
+      <tr><td>AS 21</td><td>Consolidated Financial Statements</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+      <tr><td>AS 22</td><td>Accounting for Taxes on Income</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>AS 25</td><td>Interim Financial Reporting</td><td>No</td><td>With exemptions</td><td>Yes</td><td>No</td></tr>
+      <tr><td>AS 26</td><td>Intangible Assets</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes (disclosure exemptions)</td></tr>
+      <tr><td>AS 28</td><td>Impairment of Assets</td><td>No</td><td>With exemptions</td><td>Yes</td><td>Yes (disclosure exemptions)</td></tr>
+      <tr><td>AS 29</td><td>Provisions, Contingent Liabilities & Assets</td><td>No</td><td>With exemptions</td><td>Yes</td><td>Yes (disclosure exemptions)</td></tr>
+    </table>
+    </div>
+    <div class="exam"><strong>Exam Tip</strong>AS 15, 17, 19, 20, 25, 28, 29 are NOT applicable to all companies — they have selective applicability for SMCs and non-corporate entities. This is a common MCQ area.</div>
+  </div>
+</div>
+
+<!-- S2: Limitations -->
+<div class="sec-body" id="s2">
+  <div class="ch-title">Limitations of Accounting Standards — Why Ind AS Was Needed</div>
+  <div class="card">
+    <div class="card-title">Areas where AS fell short</div>
+    <ul class="note-list">
+      <li><strong>Complex financial instruments:</strong> No explicit guidance on optionally/compulsorily convertible shares, debentures</li>
+      <li><strong>Derivatives:</strong> No coverage of derivatives embedded in foreign currency bonds, equity instruments, commodity derivatives</li>
+      <li><strong>Group restructuring:</strong> Business acquisitions, mergers, demergers, slump sales — inadequately dealt with</li>
+      <li><strong>Revenue arrangements:</strong> Complex digital economy models and multi-element arrangements not addressed</li>
+      <li><strong>Stock-based compensation:</strong> Diverse ESOPs and C-suite remuneration models lacked clear guidance</li>
+      <li><strong>Complex tax provisions:</strong> Determination of current and deferred tax in complex structures was unclear</li>
+      <li><strong>Shareholder returns:</strong> Various modes of shareholder returns and group reorganization investments in kind had no guidance</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Disclosure Gaps in Old AS</div>
+    <ul class="note-list">
+      <li>Disclosure requirements in AS were limited compared to IFRS</li>
+      <li>Needed improvement particularly for: revenue, related party transactions, segment reporting, business combinations</li>
+      <li>Investors could not get complete overview of business risks and performance from AS financial statements</li>
+    </ul>
+    <div class="warn"><strong>Key Point</strong>AS could not deal with rising complexities of modern cross-border business, leading to inconsistent accounting treatments. This, combined with international investor apprehension, made transition to Ind AS inevitable.</div>
+  </div>
+</div>
+
+<!-- S3: IFRS History -->
+<div class="sec-body" id="s3">
+  <div class="ch-title">Emergence of Global Accounting Standards — IFRS History</div>
+  <div class="card">
+    <div class="card-title">Timeline</div>
+    <div class="flow-row">
+      <div class="flow-step">1973: IASC formed</div><div class="flow-arr">→</div>
+      <div class="flow-step">1989: IOSCO paper</div><div class="flow-arr">→</div>
+      <div class="flow-step">May 2000: IOSCO endorses 30 IAS</div>
+    </div>
+    <div class="flow-row" style="margin-top:4px">
+      <div class="flow-step">1 Jul 2000: IASB formed</div><div class="flow-arr">→</div>
+      <div class="flow-step">Oct 2002: Norwalk Agreement</div><div class="flow-arr">→</div>
+      <div class="flow-step">19 Jul 2002: EU mandates IFRS</div><div class="flow-arr">→</div>
+      <div class="flow-step">2005: IFRS mandatory in EU</div>
+    </div>
+    <div class="imp" style="margin-top:12px"><strong>Key Fact</strong>Standards issued by IASC = called IAS (numbered 1 onwards). Standards issued by IASB from 2001 = called IFRS (new series). IFRIC = interpretations body of IASB. SIC = older interpretations (pre-2003).</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Key Bodies and Events</div>
+    <table class="tbl">
+      <tr><th>Body/Event</th><th>Detail</th></tr>
+      <tr><td>IASC (1973)</td><td>International Accounting Standards Committee. Formed by professional bodies of 9 countries: Canada, Australia, France, Germany, Japan, Mexico, Netherlands, UK/Ireland, USA. Goal: harmonize financial reporting.</td></tr>
+      <tr><td>IASB (1 Jul 2000)</td><td>International Accounting Standards Board. Replaced IASC. Operates under IASCF (now IFRS Foundation). Responsible for publishing IFRS.</td></tr>
+      <tr><td>IFRIC</td><td>IFRS Interpretations Committee — assists IASB, addresses application issues, suggests official interpretations.</td></tr>
+      <tr><td>IOSCO (1989)</td><td>International Organisation of Securities Commissions. Noted that cross-border security offerings would be facilitated by internationally accepted standards.</td></tr>
+      <tr><td>IOSCO (May 2000)</td><td>Completed assessment of 30 IASC standards. Recommended members permit use of these standards for cross-border offerings.</td></tr>
+      <tr><td>EU Regulation (19 Jul 2002)</td><td>European Parliament and Council mandated IFRS for all EU listed companies from 2005.</td></tr>
+      <tr><td>Norwalk Agreement (Oct 2002)</td><td>Joint IASB-FASB convergence project to eliminate differences between IFRS and US GAAP. G20 supports this.</td></tr>
+      <tr><td>Current Status</td><td>168 jurisdictions require IFRS for all or most publicly listed companies (as per IASB research).</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Two Globally Dominant Frameworks</div>
+    <div class="grid2">
+      <div class="mini-card"><div class="mc-title">US GAAP</div><div class="mc-val">Issued by FASB (Financial Accounting Standards Board). Rules-based framework. Primarily used in USA.</div></div>
+      <div class="mini-card"><div class="mc-title">IFRS</div><div class="mc-val">Issued by IASB. Principles-based framework. Used in 168+ jurisdictions globally including India (as Ind AS).</div></div>
+    </div>
+    <div class="exam"><strong>Exam Tip</strong>Full convergence of IFRS and US GAAP has NOT been achieved. The single set of global standards goal remains unfulfilled, but IFRS is dominant globally.</div>
+  </div>
+</div>
+
+<!-- S4: Need & Benefits -->
+<div class="sec-body" id="s4">
+  <div class="ch-title">Need for Global Standards in India + Benefits</div>
+  <div class="card">
+    <div class="card-title">Why India Needed Global Standards</div>
+    <ul class="note-list">
+      <li>Modern economies rely on cross-border transactions and free flow of international capital</li>
+      <li>Indian companies operating globally had to maintain multiple financial books — increased cost, complexity, risk</li>
+      <li>Small differences in AS vs IFRS could drastically change reported figures — e.g., same investment may show profit under AS but loss under IFRS (cost vs fair value)</li>
+      <li>International investors were apprehensive about Indian company financials due to limited understanding of Indian accounting framework</li>
+      <li>Investors often insisted on IFRS-based information from Indian companies</li>
+      <li><strong>India committed to convergence with IFRS at the G20 Summit in 2009</strong></li>
+    </ul>
+    <div class="imp"><strong>Example</strong>A company has non-current investments in equity instruments with a temporary decline in value. Under AS → report at cost. Under IFRS → fair value the investment. Result: loss recognized under IFRS, not under AS. Same economic reality, different reported outcomes.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Benefits of Global Accounting Standards</div>
+    <div class="grid2">
+      <div class="mini-card"><div class="mc-title">Transparency</div><div class="mc-val">Enhanced international comparability. Investors and market participants make more informed decisions.</div></div>
+      <div class="mini-card"><div class="mc-title">Accountability</div><div class="mc-val">Reduces information gap between capital providers and management. Vital for global regulators.</div></div>
+      <div class="mini-card"><div class="mc-title">Economic Efficiency</div><div class="mc-val">Better capital allocation. Single accounting language lowers cost of capital. Increased FDI in IFRS-adopting countries.</div></div>
+      <div class="mini-card"><div class="mc-title">Easier Group Reporting</div><div class="mc-val">Multinationals can consolidate operations, track KPIs, and reduce number of different reporting systems.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S5: Convergence vs Adoption -->
+<div class="sec-body" id="s5">
+  <div class="ch-title">Convergence vs Adoption of IFRS</div>
+  <div class="card">
+    <div class="grid2">
+      <div class="mini-card"><div class="mc-title">Adoption</div><div class="mc-val">100% IFRS as issued by IASB. No local modifications whatsoever. Entity CAN assert IFRS compliance.<br><br><strong>Countries:</strong> Canada, Bahrain, Cambodia</div></div>
+      <div class="mini-card"><div class="mc-title">Convergence</div><div class="mc-val">IFRS with limited local carve-outs. Work towards eliminating gaps over time. Entity CANNOT assert IFRS compliance.<br><br><strong>Countries:</strong> India, China, Hong Kong</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Key Rules on Convergence</div>
+    <ul class="note-list">
+      <li><span class="nt">India has CONVERGED with IFRS, not adopted it</span> — Ind AS ≠ IFRS</li>
+      <li>Ind AS is a separate accounting framework based on IFRS, created by MCA, with certain carve-outs for Indian economic and legal environment</li>
+      <li>An entity applying IFRS as amended by a local authority <strong>cannot assert compliance with IFRS</strong> (as issued by IASB)</li>
+      <li>IFRS 1 — First-time Adoption: must be applied when an entity first asserts IFRS compliance</li>
+      <li>For countries aligning national standards with IFRS, they need to require IFRS 1 so entities can assert compliance — but India has carve-outs, so this full assertion is not possible</li>
+      <li>Dictionary meaning of convergence: <em>"to move towards each other or meet at the same point from different directions"</em></li>
+      <li>Carve-outs in Ind AS are regularly reviewed with the aim of eventually aligning fully with IFRS</li>
+    </ul>
+    <div class="exam"><strong>Exam Tip</strong>This distinction is frequently tested. In exam answers, always clearly state: "India has converged (not adopted) with IFRS. Ind AS financial statements cannot assert IFRS compliance." This one point can carry significant marks.</div>
+  </div>
+</div>
+
+<!-- S6: Development Process -->
+<div class="sec-body" id="s6">
+  <div class="ch-title">Process of Development and Finalisation of Ind AS</div>
+  <div class="card">
+    <div class="card-title">Step-by-step Process</div>
+    <div class="flow-row">
+      <div class="flow-step">1. IASB issues/revises IFRS</div><div class="flow-arr">→</div>
+      <div class="flow-step">2. ASB considers convergence under Ind AS</div>
+    </div>
+    <div class="flow-row" style="margin-top:6px">
+      <div class="flow-step">3. Preliminary draft with carve-in/carve-out</div><div class="flow-arr">→</div>
+      <div class="flow-step">4. Circulate to ICAI Council + outside bodies</div>
+    </div>
+    <div class="flow-row" style="margin-top:6px">
+      <div class="flow-step">5. Outside bodies: MCA, SEBI, C&AG, CBDT</div><div class="flow-arr">→</div>
+      <div class="flow-step">6. Meetings with outside bodies for views</div>
+    </div>
+    <div class="flow-row" style="margin-top:6px">
+      <div class="flow-step">7. Exposure Draft issued for public comments</div><div class="flow-arr">→</div>
+      <div class="flow-step">8. Comments considered; final draft prepared</div>
+    </div>
+    <div class="flow-row" style="margin-top:6px">
+      <div class="flow-step">9. ICAI Council approves</div><div class="flow-arr">→</div>
+      <div class="flow-step">10. Submitted to NFRA with ICAI recommendations</div><div class="flow-arr">→</div>
+      <div class="flow-step">11. MCA notifies in Gazette</div>
+    </div>
+    <div class="imp" style="margin-top:14px"><strong>Key Point</strong>NFRA reviews and provides inputs to ICAI before finalizing. Post NFRA review, MCA notifies Ind AS under the Companies Act with announcement of applicability date. ICAI separately issues AS for non-corporate entities.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Carve-in vs Carve-out</div>
+    <div class="grid2">
+      <div class="mini-card"><div class="mc-title">Carve-out</div><div class="mc-val">Provisions of IFRS removed from Ind AS because not suitable for Indian context (e.g., certain hedge accounting provisions)</div></div>
+      <div class="mini-card"><div class="mc-title">Carve-in</div><div class="mc-val">Additional provisions added to Ind AS beyond IFRS to address specific Indian legal/regulatory requirements</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S7: Transition -->
+<div class="sec-body" id="s7">
+  <div class="ch-title">Transition from AS to Ind AS — History, Numbering & Structure</div>
+  <div class="card">
+    <div class="card-title">Historical Timeline</div>
+    <table class="tbl">
+      <tr><th>Year</th><th>Event</th></tr>
+      <tr><td>2009</td><td>India commits to IFRS convergence at G20 summit</td></tr>
+      <tr><td>2011</td><td>MCA issued roadmap for April 2011 implementation → <span class="nt">suspended</span> due to unresolved tax and other issues</td></tr>
+      <tr><td>2014-15</td><td>Union Budget: Finance Minister proposed adoption of Ind AS. Banks and insurance to be notified separately by regulators.</td></tr>
+      <tr><td>16 Feb 2015</td><td>MCA notified Companies (Indian Accounting Standards) Rules, 2015. 39 Ind AS notified. Roadmap laid for companies and NBFCs.</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Numbering of Ind AS</div>
+    <table class="tbl">
+      <tr><th>International Standard</th><th>Corresponding Ind AS</th><th>Rule</th></tr>
+      <tr><td>IAS 1 – Presentation of FS</td><td>Ind AS 1</td><td>IAS numbers retained as-is</td></tr>
+      <tr><td>IAS 16 – PP&E</td><td>Ind AS 16</td><td>IAS numbers retained as-is</td></tr>
+      <tr><td>IFRS 1 – First-time Adoption</td><td>Ind AS 101</td><td>100 added to IFRS number</td></tr>
+      <tr><td>IFRS 9 – Financial Instruments</td><td>Ind AS 109</td><td>100 added to IFRS number</td></tr>
+      <tr><td>IFRS 16 – Leases</td><td>Ind AS 116</td><td>100 added to IFRS number</td></tr>
+    </table>
+    <div class="imp"><strong>Count Comparison</strong>Total IFRS: 41 standards (as of 1.11.2024; IFRS 18 & 19 issued, effective 1 Jan 2027). Total Ind AS: 39 — IAS 26 (Retirement Benefit Plans) not notified in India; IAS 39 hedge accounting portion not relevant as Ind AS 109 covers it.</div>
+    <div class="imp"><strong>Interpretations</strong>Total IFRIC + SIC under IFRS: 20. Under Ind AS: 18. IFRIC 2 (Members' Shares in Co-operative Entities) and SIC-7 (Introduction of Euro) not included. However, Appendix C to Ind AS 103 is uniquely Indian with no IFRIC/SIC equivalent.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Structure of Each Ind AS — 7 Components</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Component</th><th>Description</th></tr>
+      <tr><td>1</td><td>Objective</td><td>Purpose and issues addressed by the standard. Bird's-eye view of what it seeks to achieve.</td></tr>
+      <tr><td>2</td><td>Scope</td><td>What the standard covers — and importantly, what it explicitly excludes.</td></tr>
+      <tr><td>3</td><td>Definitions</td><td>Key terms. For IAS-based standards: in the body. For IFRS-based (Ind AS 101+): in appendices.</td></tr>
+      <tr><td>4</td><td>Content</td><td>Main principles — recognition, measurement, subsequent measurement, and standard-specific guidance.</td></tr>
+      <tr><td>5</td><td>Disclosure</td><td>Qualitative and quantitative information required in financial statements.</td></tr>
+      <tr><td>6</td><td>Transitional Provisions & Effective Date</td><td>When applicable; first-time adoption rules (Ind AS 101 deals with first-time adoption broadly).</td></tr>
+      <tr><td>7</td><td>Appendices</td><td>Industry guidance, application guidance, defined terms, references to other Ind AS, comparison with IFRS, applicable IFRIC/SIC.</td></tr>
+    </table>
+    <div class="exam"><strong>Exam Tip</strong>Bold text in Ind AS = principle. Plain text = application guidance / explanation. Both carry equal authority — this is a commonly tested fact.</div>
+  </div>
+</div>
+
+<!-- S8: All 39 Ind AS -->
+<div class="sec-body" id="s8">
+  <div class="ch-title">Complete List of All 39 Ind AS</div>
+  <div class="card">
+    <div class="card-title">IAS-based Ind AS (retain original IAS numbering)</div>
+    <table class="tbl">
+      <tr><th>Ind AS</th><th>Subject</th></tr>
+      <tr><td>Ind AS 1</td><td>Presentation of Financial Statements</td></tr>
+      <tr><td>Ind AS 2</td><td>Inventories</td></tr>
+      <tr><td>Ind AS 7</td><td>Statement of Cash Flows</td></tr>
+      <tr><td>Ind AS 8</td><td>Accounting Policies, Changes in Accounting Estimates and Errors</td></tr>
+      <tr><td>Ind AS 10</td><td>Events after the Reporting Period</td></tr>
+      <tr><td>Ind AS 12</td><td>Income Taxes</td></tr>
+      <tr><td>Ind AS 16</td><td>Property, Plant and Equipment</td></tr>
+      <tr><td>Ind AS 19</td><td>Employee Benefits</td></tr>
+      <tr><td>Ind AS 20</td><td>Accounting for Government Grants and Disclosure of Government Assistance</td></tr>
+      <tr><td>Ind AS 21</td><td>The Effects of Changes in Foreign Exchange Rates</td></tr>
+      <tr><td>Ind AS 23</td><td>Borrowing Costs</td></tr>
+      <tr><td>Ind AS 24</td><td>Related Party Disclosures</td></tr>
+      <tr><td>Ind AS 27</td><td>Separate Financial Statements</td></tr>
+      <tr><td>Ind AS 28</td><td>Investments in Associates and Joint Ventures</td></tr>
+      <tr><td>Ind AS 29</td><td>Financial Reporting in Hyperinflationary Economies</td></tr>
+      <tr><td>Ind AS 32</td><td>Financial Instruments: Presentation</td></tr>
+      <tr><td>Ind AS 33</td><td>Earnings per Share</td></tr>
+      <tr><td>Ind AS 34</td><td>Interim Financial Reporting</td></tr>
+      <tr><td>Ind AS 36</td><td>Impairment of Assets</td></tr>
+      <tr><td>Ind AS 37</td><td>Provisions, Contingent Liabilities and Contingent Assets</td></tr>
+      <tr><td>Ind AS 38</td><td>Intangible Assets</td></tr>
+      <tr><td>Ind AS 40</td><td>Investment Property</td></tr>
+      <tr><td>Ind AS 41</td><td>Agriculture</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">IFRS-based Ind AS (IFRS number + 100)</div>
+    <table class="tbl">
+      <tr><th>Ind AS</th><th>Subject</th></tr>
+      <tr><td>Ind AS 101</td><td>First-time Adoption of Indian Accounting Standard</td></tr>
+      <tr><td>Ind AS 102</td><td>Share-based Payment</td></tr>
+      <tr><td>Ind AS 103</td><td>Business Combinations</td></tr>
+      <tr><td>Ind AS 105</td><td>Non-current Assets Held for Sale and Discontinued Operations</td></tr>
+      <tr><td>Ind AS 106</td><td>Exploration for and Evaluation of Mineral Resources</td></tr>
+      <tr><td>Ind AS 107</td><td>Financial Instruments: Disclosures</td></tr>
+      <tr><td>Ind AS 108</td><td>Operating Segments</td></tr>
+      <tr><td>Ind AS 109</td><td>Financial Instruments</td></tr>
+      <tr><td>Ind AS 110</td><td>Consolidated Financial Statements</td></tr>
+      <tr><td>Ind AS 111</td><td>Joint Arrangements</td></tr>
+      <tr><td>Ind AS 112</td><td>Disclosure of Interests in Other Entities</td></tr>
+      <tr><td>Ind AS 113</td><td>Fair Value Measurement</td></tr>
+      <tr><td>Ind AS 114</td><td>Regulatory Deferral Accounts</td></tr>
+      <tr><td>Ind AS 115</td><td>Revenue from Contracts with Customers</td></tr>
+      <tr><td>Ind AS 116</td><td>Leases</td></tr>
+      <tr><td>Ind AS 117</td><td>Insurance Contracts</td></tr>
+    </table>
+    <div class="exam"><strong>Exam Tip</strong>Note: IFRS 4 and IFRS 6 → Ind AS 104 and Ind AS 106 respectively. IFRS 17 (Insurance) → Ind AS 117. Ind AS 104 does not exist in the notified list — insurance companies follow their regulators. IFRS 14 → Ind AS 114 (Regulatory Deferral Accounts).</div>
+  </div>
+</div>
+
+<!-- S9: Roadmap Companies -->
+<div class="sec-body" id="s9">
+  <div class="ch-title">Roadmap for Applicability — Listed &amp; Unlisted Companies</div>
+  <div class="phase-box">
+    <h4>Phase I — Applicable from 1 April 2016</h4>
+    <ul class="note-list">
+      <li>Listed companies (equity/debt on any stock exchange in India or outside) with Net Worth ≥ ₹500 Cr</li>
+      <li>Unlisted companies with Net Worth ≥ ₹500 Cr</li>
+      <li>Holding, Subsidiary, Joint Venture, Associate of above companies</li>
+    </ul>
+  </div>
+  <div class="phase-box">
+    <h4>Phase II — Applicable from 1 April 2017</h4>
+    <ul class="note-list">
+      <li>Listed companies (equity/debt) with Net Worth < ₹500 Cr</li>
+      <li>Unlisted companies with Net Worth ≥ ₹250 Cr but < ₹500 Cr</li>
+      <li>Holding, Subsidiary, JV, Associate of above companies</li>
+    </ul>
+  </div>
+  <div class="warn"><strong>Not Applicable</strong>SME exchange listed companies and Institutional Trading Platform (without IPO) listed companies are exempt from mandatory Ind AS. Companies with NW below ₹250 Cr (unlisted) continue with old AS — but can voluntarily adopt from 1 April 2015.</div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-title">Key Transition Matters</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Rule</th><th>Detail</th></tr>
+      <tr><td>1</td><td>Comparatives</td><td>One year comparative required. Adoption from 1 Apr 20X4 → comparative for 20X3-X4 → transition date = 1 Apr 20X3.</td></tr>
+      <tr><td>2</td><td>Which Ind AS to apply</td><td>Apply all Ind AS effective at the END of the first Ind AS reporting period.</td></tr>
+      <tr><td>3</td><td>Once adopted, always apply</td><td>Even if criteria no longer met in subsequent years, must continue with Ind AS.</td></tr>
+      <tr><td>4</td><td>Indian group companies</td><td>Ind AS applicable to one company → also applies to its H/S/A/JV.</td></tr>
+      <tr><td>5</td><td>Overseas subsidiaries</td><td>May use local GAAP for standalone FS. But Indian parent must prepare consolidated FS as per Ind AS.</td></tr>
+      <tr><td>6</td><td>Both types of FS</td><td>Applies to both standalone AND consolidated financial statements.</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Net Worth Calculation — Section 2(57) of Companies Act, 2013</div>
+    <div class="imp"><strong>Formula</strong>Net Worth = Paid-up Share Capital + Reserves created from profits + Securities Premium<br>
+    LESS: Accumulated losses + Deferred expenditure + Misc. expenditure not written off<br><br>
+    <span class="nt">EXCLUDES (do not add): Revaluation Reserve · Write-back of Depreciation Reserve · Amalgamation Reserve</span><br><br>
+    Cut-off date for companies: <strong>31 March 2014</strong> (based on standalone FS)</div>
+    <div class="exam"><strong>Illustration Tips</strong>
+      (a) NW ≥ ₹500 Cr on 31 Mar 2014 → Phase I (Ind AS from 1 Apr 2016)<br>
+      (b) NW between ₹250–500 Cr on 31 Mar 2014, listed → Phase II (Ind AS from 1 Apr 2017)<br>
+      (c) NW meets threshold for FIRST TIME on 31 Mar 2017 → Ind AS from 1 Apr 2017 (immediate next year)<br>
+      (d) NW met threshold on 31 Mar 2014 but drops later → STILL Phase I (once triggered, irrevocable)<br>
+      (e) Foreign parent, Indian subsidiary → test NW of Indian subsidiary only; foreign parent's NW is irrelevant<br>
+      (f) Ind AS applies to subsidiary → holding company and associate also covered, regardless of their own NW<br>
+      (g) Fellow subsidiaries NOT automatically covered — only direct H/S/A/JV chain is covered
+    </div>
+  </div>
+</div>
+
+<!-- S10: NBFC & Others -->
+<div class="sec-body" id="s10">
+  <div class="ch-title">Roadmap — NBFCs, Banking &amp; Insurance, Mutual Funds</div>
+  <div class="card">
+    <div class="card-title">NBFC Roadmap (MCA Circular 30 March 2016)</div>
+    <div class="phase-box">
+      <h4>NBFC Phase I — From 1 April 2018</h4>
+      <ul class="note-list">
+        <li>NBFCs with Net Worth ≥ ₹500 Cr</li>
+        <li>H/S/A/JV of above NBFCs (excluding those already covered under corporate roadmap)</li>
+      </ul>
+    </div>
+    <div class="phase-box" style="margin-top:8px">
+      <h4>NBFC Phase II — From 1 April 2019</h4>
+      <ul class="note-list">
+        <li>Listed NBFCs with Net Worth < ₹500 Cr</li>
+        <li>Unlisted NBFCs with Net Worth ≥ ₹250 Cr but < ₹500 Cr</li>
+        <li>H/S/A/JV of above</li>
+      </ul>
+    </div>
+    <div class="warn" style="margin-top:10px"><strong>Critical NBFC Rules</strong>
+      1. Cut-off date for NBFCs: <strong>31 March 2016</strong> (NOT 31 March 2014 like companies)<br>
+      2. <span class="nt">Voluntary adoption NOT allowed for NBFCs</span><br>
+      3. NBFCs with NW below ₹250 Cr → continue with old AS<br>
+      4. Applies to both standalone and consolidated FS<br>
+      5. NBFC meeting threshold for first time on 31 Mar 2019 → apply Ind AS from FY 2019-20
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Applicability Summary — All Entity Types</div>
+    <table class="tbl">
+      <tr><th>Entity</th><th>Applicability</th><th>Cut-off</th><th>Voluntary</th></tr>
+      <tr><td>Listed Companies</td><td>Phase I (Apr 2016) or II (Apr 2017)</td><td>31 Mar 2014</td><td><span class="gt">Allowed (Apr 2015)</span></td></tr>
+      <tr><td>Unlisted Companies (NW ≥ ₹250 Cr)</td><td>Phase I or II</td><td>31 Mar 2014</td><td><span class="gt">Allowed</span></td></tr>
+      <tr><td>NBFCs (NW ≥ ₹250 Cr)</td><td>Phase I (Apr 2018) or II (Apr 2019)</td><td>31 Mar 2016</td><td><span class="nt">Not allowed</span></td></tr>
+      <tr><td>Banking Companies</td><td>As per RBI notification</td><td>TBD</td><td><span class="nt">Not allowed</span></td></tr>
+      <tr><td>Insurance Companies</td><td>As per IRDA notification</td><td>TBD</td><td><span class="nt">Not allowed</span></td></tr>
+      <tr><td>Mutual Funds</td><td>From 1 April 2023</td><td>SEBI circular 25 Jan 2022</td><td>N/A</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Non-Finance Company with NBFC Parent/Subsidiary</div>
+    <table class="tbl">
+      <tr><th>Scenario</th><th>Treatment</th></tr>
+      <tr><td>NBFC is parent, preparing CFS as per AS; subsidiary is a non-finance company covered by Ind AS</td><td>Subsidiary prepares FS as per Ind AS. But must ALSO provide data as per parent's AS policies for consolidation purposes (until NBFC transitions to Ind AS)</td></tr>
+      <tr><td>Parent is a non-finance company covered by Ind AS; NBFC is subsidiary/associate/JV</td><td>Parent prepares Ind AS CFS. NBFC must provide data per parent's Ind AS policies for consolidation. NBFC continues with AS for its own statutory accounts until its Ind AS date.</td></tr>
+    </table>
+    <div class="imp"><strong>Key Principle</strong>Each entity applies AS or Ind AS based on its OWN applicable standard. But for consolidation, the NBFC subsidiary must provide shadow Ind AS data to the parent if needed.</div>
+  </div>
+</div>
+
+<!-- S11: Statutory Provisions -->
+<div class="sec-body" id="s11">
+  <div class="ch-title">Statutory Provisions — Companies Act &amp; SEBI</div>
+  <div class="card">
+    <div class="card-title">Companies Act, 2013 — Key Sections</div>
+    <table class="tbl">
+      <tr><th>Section</th><th>Provision</th></tr>
+      <tr><td>Section 2(2)</td><td>Definition of "accounting standards" — standards for companies referred to in Section 133</td></tr>
+      <tr><td>Section 133</td><td>Central Government prescribes AS on ICAI recommendation, after NFRA consultation. Companies (Ind AS) Rules 2015 notified under this power.</td></tr>
+      <tr><td>Section 129</td><td>Financial statements must give true and fair view, comply with AS (u/s 133), and follow Schedule III format.</td></tr>
+      <tr><td>Section 134(5)(a)</td><td>Director Responsibility Statement must confirm compliance with applicable AS (with explanation for material departures).</td></tr>
+      <tr><td>Section 143</td><td>Auditor must opine whether financial statements comply with accounting standards.</td></tr>
+      <tr><td>Section 230 & 232</td><td>Merger/amalgamation scheme — Tribunal can only sanction after obtaining auditor certificate confirming accounting treatment conforms with AS u/s 133.</td></tr>
+      <tr><td>Section 66</td><td>Share capital reduction — Tribunal will not sanction unless accounting treatment conforms with AS, evidenced by auditor certificate.</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">SEBI Regulations</div>
+    <table class="tbl">
+      <tr><th>Regulation</th><th>Key Requirement</th></tr>
+      <tr><td>SEBI Circular (30 Nov 2015)</td><td>Companies adopting Ind AS must ensure quarterly/annual financial results filed under Regulation 33 AND their comparatives are Ind AS compliant.</td></tr>
+      <tr><td>SEBI (ICDR) 2018</td><td>Ind AS applicable for all financial information (3 years) disclosed in offer documents. Year-wise applicability based on year of filing. E.g., offer document filed Apr 2021 to Mar 2022 → all 3 years FS must be Ind AS.</td></tr>
+      <tr><td>Revised formats (from 31 Mar 2017)</td><td>Quarterly unaudited/audited P&L and half-yearly Balance Sheet submitted by listed entities must follow Schedule III format (excluding notes/detailed sub-classification). Exception: Banking and Insurance use their regulator-specified formats.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- S12: Schedule III & GN -->
+<div class="sec-body" id="s12">
+  <div class="ch-title">Division II to Schedule III &amp; Guidance Note — Key Points</div>
+  <div class="card">
+    <div class="card-title">Division II — Background & Structure</div>
+    <ul class="note-list">
+      <li>Schedule III notified with Companies Act 2013 on 29 Aug 2013</li>
+      <li><span class="kt">Division II</span> inserted via notification dated 6 Apr 2016 — provides format for Ind AS companies</li>
+      <li>Latest amendment: 24 March 2021 (applies to FY commencing on or after 1 April 2021)</li>
+      <li>Does NOT apply to: banking companies, insurance companies, NBFCs (NBFCs use <span class="kt">Division III</span>)</li>
+    </ul>
+    <div class="imp"><strong>Division II Structure</strong>Part I: Balance Sheet + Statement of Changes in Equity + related notes<br>Part II: Statement of Profit and Loss + related notes<br>Part III: General Instructions for preparation of Consolidated Financial Statements</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Guidance Note (ICAI, January 2022) — 15 Key Areas</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Area</th><th>Key Rule</th></tr>
+      <tr><td>1</td><td>PP&E</td><td>Land and Building must be presented SEPARATELY (not combined even for revaluation). Capital advances → Other Non-Current Assets; NOT under CWIP.</td></tr>
+      <tr><td>2</td><td>Non-current Investments</td><td>Disclose: name, nature, extent (number + face value) of investment in each body corporate. Market value of quoted investments = fair value. Impairment disclosed separately. LLPs → disclose under "other investments" (not partnership firm category).</td></tr>
+      <tr><td>3</td><td>Trade Receivables</td><td>Only for unconditional right arising from goods sold/services rendered. Insurance claims, PPE sale proceeds, reimbursable expenses → "Other Financial Assets". Ageing calculated from DUE DATE. Must split between disputed and undisputed.</td></tr>
+      <tr><td>4</td><td>Finance Lease Receivable</td><td>Non-current portion → Other Non-Current Financial Assets. Current portion → Other Current Financial Assets.</td></tr>
+      <tr><td>5</td><td>Current Assets classification</td><td>All items bifurcated between current and non-current. If no matching current head exists in Division II, add as separate line item under Current category (Division II permits additional line items).</td></tr>
+      <tr><td>6</td><td>Bank Overdraft</td><td>Ind AS 7 permits treating as cash equivalent in cash flow statement. But in Balance Sheet — must classify as Borrowings under Financial Liabilities (not cash & cash equivalents), unless offset conditions under Ind AS 32 para 42 are met.</td></tr>
+      <tr><td>7</td><td>Current Tax Assets</td><td>Excess tax paid over tax due = asset. If not expected to be recovered within one year → classify under Non-Current Assets.</td></tr>
+      <tr><td>8</td><td>Equity Share Capital</td><td>Accounting (principle-based) definition of equity used. Instruments meeting Ind AS 32 equity definition (including convertible preference shares/debentures with no liability component) → shown as equity instruments.</td></tr>
+      <tr><td>9</td><td>Borrowings</td><td>Disclose repayment terms (per loan, or aggregated if similar). Current maturities of LT debt → Current Borrowings. LT debt = borrowing originally for > 12 months.</td></tr>
+      <tr><td>10</td><td>Trade Payables</td><td>Only for goods purchased/services received. Statutory dues (PF, GST), capital goods payables, contractual reimbursables → NOT trade payables. Ageing from due date; split disputed vs undisputed.</td></tr>
+      <tr><td>11</td><td>Current Borrowings</td><td>All loans payable on demand or within 12 months. Disclose defaults (period + amount, item-wise). Provide non-current and current portions for each category of non-current borrowings (in addition to Schedule III requirements).</td></tr>
+      <tr><td>12</td><td>Other Current Liabilities</td><td>Trade/security deposits not meeting financial liability definition → classify as "Others". Statutory dues (GST, withholding tax, excise, VAT) → also under Others.</td></tr>
+      <tr><td>13</td><td>Contingent Liabilities</td><td>Third-party guarantees (e.g., guaranteeing loan of subsidiary) = contingent liability. Counter-guarantees and performance guarantees (company's own obligations) = NOT contingent liabilities. Should not be shown as such.</td></tr>
+      <tr><td>14</td><td>Revenue</td><td>Gross vs net of indirect taxes depends on principal vs agent test. "Other operating revenue" includes operating activities not from direct goods/services sale. Whether income is "other operating" or "other income" → based on facts of each case.</td></tr>
+      <tr><td>15</td><td>Exceptional Items</td><td>Not defined in Ind AS or Schedule III. Ind AS 1 requires separate disclosure of material items. Includes: inventory write-downs, PP&E write-downs and reversals, restructuring provisions, PP&E disposals, investment disposals, discontinued operations, litigation settlements, provision reversals.</td></tr>
+    </table>
+    <div class="exam"><strong>Exam Tip</strong>Items 1, 3, 6, 10 and 13 from the Guidance Note are the most frequently tested. Particularly the bank overdraft (BS = borrowing), trade receivables scope, and the contingent liability / counter-guarantee distinction.</div>
+  </div>
+</div>
+
+</div><!-- end ch1Wrap -->
+
+<!-- CH2 WRAP -->
+<div id="ch2Wrap" style="display:none">
+<div class="sec-nav" id="secNav2">
+  <button class="sec-btn active" onclick="showSec2(0)">Overview</button>
+  <button class="sec-btn" onclick="showSec2(1)">Introduction</button>
+  <button class="sec-btn" onclick="showSec2(2)">GPFR</button>
+  <button class="sec-btn" onclick="showSec2(3)">Qualitative Characteristics</button>
+  <button class="sec-btn" onclick="showSec2(4)">Financial Statements</button>
+  <button class="sec-btn" onclick="showSec2(5)">Elements</button>
+  <button class="sec-btn" onclick="showSec2(6)">Recognition</button>
+  <button class="sec-btn" onclick="showSec2(7)">Measurement</button>
+  <button class="sec-btn" onclick="showSec2(8)">Presentation</button>
+  <button class="sec-btn" onclick="showSec2(9)">Capital</button>
+</div>
+
+<!-- C2-S0: Overview -->
+<div class="sec-body visible" id="c2s0">
+  <div class="ch-title">Chapter 2: Conceptual Framework for Financial Reporting under Ind AS</div>
+  <div class="quick-grid">
+    <div class="qc"><div class="qc-num">9</div><div class="qc-lbl">Units in this chapter</div></div>
+    <div class="qc"><div class="qc-num">5</div><div class="qc-lbl">Elements of FS</div></div>
+    <div class="qc"><div class="qc-num">2018</div><div class="qc-lbl">IASB Framework basis</div></div>
+    <div class="qc"><div class="qc-num">5</div><div class="qc-lbl">Measurement bases</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">What is the Conceptual Framework?</div>
+    <ul class="note-list">
+      <li>Developed by ICAI corresponding to IASB's <span class="kt">Conceptual Framework 2018</span></li>
+      <li><span class="nt">NOT a Standard</span> — does not override any Ind AS or any requirement in any Ind AS</li>
+      <li>Three purposes: assist standard-setting, consistent preparation, and interpretation of Ind AS</li>
+      <li>Where conflict exists between Ind AS and the Framework — <span class="kt">Ind AS prevails</span></li>
+      <li>Any departure by ICAI from the Framework is explained in an Appendix to the relevant Ind AS</li>
+    </ul>
+    <div class="imp"><strong>Key Rule</strong>Ind AS 1, Ind AS 8, and Ind AS 103 explicitly require preparers to follow guidance in the Conceptual Framework when no specific standard applies or when a choice of policy exists.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Chapter Topics at a Glance</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Unit</th><th>Key Focus</th></tr>
+      <tr><td>1</td><td>Introduction</td><td>Purpose and hierarchy of the Framework</td></tr>
+      <tr><td>2</td><td>GPFR</td><td>Objectives, limitations, economic resources & changes</td></tr>
+      <tr><td>3</td><td>Qualitative Characteristics</td><td>Relevance, faithful representation, enhancing QCs, cost constraint</td></tr>
+      <tr><td>4</td><td>Financial Statements</td><td>Scope, reporting period, going concern, reporting entity</td></tr>
+      <tr><td>5</td><td>Elements</td><td>Asset, liability, equity, income, expenses — definitions & criteria</td></tr>
+      <tr><td>6</td><td>Recognition & Derecognition</td><td>When to include/remove items from financial statements</td></tr>
+      <tr><td>7</td><td>Measurement</td><td>Historical cost, fair value, value in use, fulfilment value, current cost</td></tr>
+      <tr><td>8</td><td>Presentation & Disclosure</td><td>Classification, offsetting, OCI, aggregation</td></tr>
+      <tr><td>9</td><td>Capital & Capital Maintenance</td><td>Financial vs physical concept; determining profit</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- C2-S1: Introduction -->
+<div class="sec-body" id="c2s1">
+  <div class="ch-title">Unit 1: Introduction to the Conceptual Framework</div>
+  <div class="card">
+    <div class="card-title">Three Purposes of the Conceptual Framework</div>
+    <table class="tbl">
+      <tr><th>Purpose</th><th>Details</th></tr>
+      <tr><td><strong>Standard Setting</strong></td><td>Assist ICAI in formulating Ind AS on consistent concepts</td></tr>
+      <tr><td><strong>Consistent Preparation</strong></td><td>Help preparers develop accounting policies when no Ind AS applies to a transaction, or when an Ind AS allows a choice of policy</td></tr>
+      <tr><td><strong>Interpreting Ind AS</strong></td><td>Assist all parties — preparers, auditors, users — to understand and interpret Ind AS</td></tr>
+    </table>
+    <div class="warn"><strong>Common Confusion</strong>The Conceptual Framework is NOT an Ind AS. It does not override any Ind AS. If a specific Ind AS requirement departs from the Framework, Ind AS wins — and the departure is explained in an Appendix.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Historical Background</div>
+    <ul class="note-list">
+      <li>ICAI previously issued "Framework for the Preparation and Presentation of Financial Statements under Indian Accounting Standards" — based on IASC Framework 1989</li>
+      <li>IASB issued revised framework in <span class="kt">March 2018</span></li>
+      <li>ICAI developed corresponding <span class="kt">Conceptual Framework under Ind AS</span> to remain converged with global accounting framework</li>
+    </ul>
+  </div>
+</div>
+
+<!-- C2-S2: GPFR -->
+<div class="sec-body" id="c2s2">
+  <div class="ch-title">Unit 2: Objective of General Purpose Financial Reporting</div>
+  <div class="card">
+    <div class="card-title">Objective</div>
+    <div class="imp"><strong>Definition</strong>To provide financial information about the reporting entity that is useful to <strong>existing and potential investors, lenders and other creditors</strong> in making decisions relating to providing resources to the entity.</div>
+    <ul class="note-list">
+      <li>Decisions about: <span class="kt">buying/selling/holding</span> equity and debt instruments</li>
+      <li>Decisions about: <span class="kt">providing or settling</span> loans and other forms of credit</li>
+      <li>Decisions about: <span class="kt">exercising voting rights</span> or otherwise influencing management's actions</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Limitations of GPFR</div>
+    <ul class="note-list">
+      <li>Do <strong>not and cannot</strong> provide all information users need — must consider other sources (economic conditions, political climate, industry outlook)</li>
+      <li><span class="nt">Not designed to show the value of a reporting entity</span> — but helps estimate it</li>
+      <li>Not primarily directed at regulators or general public (other than investors, lenders, creditors)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Information Provided by GPFR</div>
+    <div class="flow-row">
+      <div class="flow-step">Financial Position<br><small>Assets &amp; Liabilities</small></div>
+      <div class="flow-arr">+</div>
+      <div class="flow-step">Financial Performance<br><small>P&amp;L / Cash Flows</small></div>
+      <div class="flow-arr">+</div>
+      <div class="flow-step">Other Changes<br><small>Not from performance</small></div>
+    </div>
+    <table class="tbl" style="margin-top:10px">
+      <tr><th>Type</th><th>What it covers</th><th>Reflects</th></tr>
+      <tr><td>Accrual Accounting</td><td>Effects of transactions in the period they <em>occur</em> — even if cash moves in a different period</td><td>Past and future ability to generate net cash inflows</td></tr>
+      <tr><td>Past Cash Flows</td><td>Cash flows during a period — operations, financing, investing activities</td><td>Liquidity, solvency, and financial performance</td></tr>
+      <tr><td>Other Changes</td><td>Changes in economic resources from events other than financial performance (e.g., issuing debt/equity instruments)</td><td>Complete picture of why resources changed</td></tr>
+    </table>
+    <div class="exam"><strong>Exam Tip</strong>Accrual accounting ≠ cash basis. The key difference: accrual records effects when they occur, not when cash moves. GPFR uses both — accrual for P&amp;L and cash flows for the cash flow statement.</div>
+  </div>
+</div>
+
+<!-- C2-S3: Qualitative Characteristics -->
+<div class="sec-body" id="c2s3">
+  <div class="ch-title">Unit 3: Qualitative Characteristics of Useful Financial Information</div>
+  <div class="card">
+    <div class="card-title">Two Fundamental Qualitative Characteristics</div>
+    <div class="grid2">
+      <div class="mini-card">
+        <div class="mc-title">1. Relevance</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li><strong>Predictive value</strong> — can be used as input to predict future outcomes (need not be a forecast itself)</li>
+            <li><strong>Confirmatory value</strong> — confirms or changes previous evaluations</li>
+            <li>Predictive and confirmatory value are <span class="kt">interrelated</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mc-title">2. Faithful Representation</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li><strong>Complete</strong> — all necessary descriptions, explanations, and depictions</li>
+            <li><strong>Neutral</strong> — no bias; supported by exercise of <span class="kt">prudence</span></li>
+            <li><strong>Free from error</strong> — no errors in description or process; does <em>not</em> mean perfectly accurate</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="imp"><strong>Materiality (sub-concept of Relevance)</strong>Information is material if omitting, misstating or obscuring it could reasonably be expected to influence decisions. It is an entity-specific aspect — ICAI cannot specify a uniform quantitative threshold.</div>
+    <div class="warn"><strong>Prudence</strong>Assets and income are not overstated; liabilities and expenses are not understated. Equally, prudence does NOT allow understatement of assets/income or overstatement of liabilities/expenses.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Four Enhancing Qualitative Characteristics</div>
+    <table class="tbl">
+      <tr><th>Characteristic</th><th>Meaning</th><th>Key Point</th></tr>
+      <tr><td><strong>Comparability</strong></td><td>Same methods for same items across entities and periods</td><td>Comparability ≠ Consistency ≠ Uniformity. Consistency is the means; comparability is the goal.</td></tr>
+      <tr><td><strong>Verifiability</strong></td><td>Knowledgeable independent observers reach consensus on faithful representation</td><td>Direct (observe cash count) or Indirect (recalculate inventory using FIFO)</td></tr>
+      <tr><td><strong>Timeliness</strong></td><td>Information available to decision-makers in time to influence decisions</td><td>Older information is generally less useful; but some info remains timely for trend analysis</td></tr>
+      <tr><td><strong>Understandability</strong></td><td>Clear, concise classification and presentation</td><td>Reports assume users have reasonable knowledge of business. Complex phenomena cannot simply be excluded — that would make reports misleading.</td></tr>
+    </table>
+    <div class="exam"><strong>Exam Tip</strong>Enhancing QCs cannot make irrelevant or unfaithfully represented information useful. They are applied as an iterative (not prescribed) process. Sometimes one must be sacrificed to maximise another — e.g., temporarily reducing comparability by adopting a new Ind AS may improve relevance long-term.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Applying the Fundamental QCs — Process</div>
+    <div class="flow-row">
+      <div class="flow-step">Identify economic phenomenon useful to users</div>
+      <div class="flow-arr">→</div>
+      <div class="flow-step">Identify most relevant type of information</div>
+      <div class="flow-arr">→</div>
+      <div class="flow-step">Determine if available &amp; faithful representation possible</div>
+      <div class="flow-arr">→</div>
+      <div class="flow-step">If not, repeat with next most relevant type</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Cost Constraint on Useful Financial Information</div>
+    <ul class="note-list">
+      <li>Cost is a <span class="kt">pervasive constraint</span> — benefits of reporting must justify the costs</li>
+      <li>Both providers and users incur costs. ICAI assesses benefits vs costs for financial reporting generally, not just for individual entities</li>
+      <li>Assessments based on a combination of quantitative and qualitative information</li>
+    </ul>
+  </div>
+</div>
+
+<!-- C2-S4: Financial Statements -->
+<div class="sec-body" id="c2s4">
+  <div class="ch-title">Unit 4: Financial Statements and the Reporting Entity</div>
+  <div class="card">
+    <div class="card-title">Objective of Financial Statements</div>
+    <ul class="note-list">
+      <li>Provide useful information about assets, liabilities, equity, income and expenses to assess:</li>
+      <li>→ <strong>Prospects for future net cash inflows</strong> to the reporting entity</li>
+      <li>→ <strong>Management's stewardship</strong> of the entity's economic resources</li>
+    </ul>
+    <table class="tbl" style="margin-top:10px">
+      <tr><th>Statement</th><th>Information provided</th></tr>
+      <tr><td>Balance Sheet</td><td>Assets, liabilities and equity (recognised)</td></tr>
+      <tr><td>Statement of Profit and Loss</td><td>Income and expenses (recognised)</td></tr>
+      <tr><td>Other Statements &amp; Notes</td><td>Unrecognised assets/liabilities, cash flows, equity contributions/distributions, methods and assumptions used</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Key Concepts</div>
+    <div class="grid2">
+      <div class="mini-card">
+        <div class="mc-title">Reporting Period</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li>Prepared for a specified period; comparative info required for at least <strong>one preceding period</strong></li>
+            <li>Forward-looking info included if: (a) relates to existing assets/liabilities/equity and (b) useful to users</li>
+            <li>Post-period events included if necessary to meet objective</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mc-title">Going Concern</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li>Entity assumed to continue operations for the <strong>foreseeable future</strong></li>
+            <li>No intention or need to liquidate or cease trading</li>
+            <li>If going concern is doubtful → different basis used and described in FS</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="imp"><strong>Perspective</strong>Financial statements view transactions from the perspective of the <strong>reporting entity as a whole</strong> — not from any particular group of investors or creditors.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Reporting Entity — Types of Financial Statements</div>
+    <table class="tbl">
+      <tr><th>Situation</th><th>Type of FS</th></tr>
+      <tr><td>Reporting entity = Parent + its subsidiaries</td><td><span class="kt">Consolidated Financial Statements</span></td></tr>
+      <tr><td>Reporting entity = Parent alone</td><td><span class="kt">Standalone / Separate Financial Statements</span></td></tr>
+      <tr><td>Two or more entities NOT linked by parent-subsidiary</td><td><span class="kt">Combined Financial Statements</span></td></tr>
+    </table>
+    <div class="warn"><strong>Unconsolidated FS</strong>Unconsolidated financial statements are <strong>NOT a substitute</strong> for consolidated FS when the latter are required. A parent may prepare unconsolidated FS in addition to — but not instead of — consolidated FS.</div>
+    <div class="exam"><strong>Exam Tip</strong>A reporting entity need not be a legal entity. It can be a portion of an entity or a group. The boundary is determined by the information needs of primary users — requiring non-arbitrary economic activities, neutral information, and described boundaries.</div>
+  </div>
+</div>
+
+<!-- C2-S5: Elements -->
+<div class="sec-body" id="c2s5">
+  <div class="ch-title">Unit 5: The Elements of Financial Statements</div>
+  <div class="card">
+    <div class="card-title">Five Elements — Definitions</div>
+    <table class="tbl">
+      <tr><th>Element</th><th>Definition</th></tr>
+      <tr><td><strong>Asset</strong></td><td>A present economic resource controlled by the entity as a result of past events. An economic resource is a right that has the potential to produce economic benefits.</td></tr>
+      <tr><td><strong>Liability</strong></td><td>A present obligation of the entity to transfer an economic resource as a result of past events.</td></tr>
+      <tr><td><strong>Equity</strong></td><td>The residual interest in the assets of the entity after deducting all its liabilities.</td></tr>
+      <tr><td><strong>Income</strong></td><td>Increases in assets, or decreases in liabilities, that result in increases in equity — other than contributions from holders of equity claims.</td></tr>
+      <tr><td><strong>Expenses</strong></td><td>Decreases in assets, or increases in liabilities, that result in decreases in equity — other than distributions to holders of equity claims.</td></tr>
+    </table>
+    <div class="imp"><strong>Key Implication</strong>Contributions from holders of equity claims are NOT income. Distributions to holders of equity claims are NOT expenses. Income and expenses link directly to changes in assets and liabilities.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Definition of Asset — Three Key Aspects</div>
+    <div class="phase-box">
+      <h4>1. Right</h4>
+      <ul class="note-list">
+        <li>Rights to receive cash (loan given, debt instrument subscribed)</li>
+        <li>Rights to receive goods or services (advance for inventory)</li>
+        <li>Rights to exchange resources on favourable terms (favourable forward contract, option)</li>
+        <li>Rights arising from obligation of another party triggered by uncertain future event (insurance claim)</li>
+        <li>Rights over physical objects (PP&amp;E, inventory) or intellectual property</li>
+        <li><span class="nt">Not all rights are assets</span> — rights must produce economic benefits BEYOND those available to all other parties</li>
+        <li>Rights available to all without significant cost (public rights of way, public domain know-how) → <span class="nt">NOT assets</span></li>
+        <li>An entity cannot have a right to obtain benefits from itself → treasury shares are NOT economic resources</li>
+      </ul>
+    </div>
+    <div class="phase-box">
+      <h4>2. Potential to Produce Economic Benefits</h4>
+      <ul class="note-list">
+        <li>Does NOT need to be certain or even likely — only potential required</li>
+        <li>Low probability asset can still qualify (e.g., <span class="kt">receivable from bankrupt customer</span> is still a right, even if carrying value is nil)</li>
+        <li>Economic resource = <strong>present right</strong> that contains potential — NOT the future benefits themselves</li>
+        <li>Expenditure incurred is evidence of seeking economic benefits but does NOT prove an asset exists</li>
+        <li>Absence of expenditure does NOT preclude an asset (e.g., government grant, donated asset)</li>
+      </ul>
+    </div>
+    <div class="phase-box">
+      <h4>3. Control</h4>
+      <ul class="note-list">
+        <li>Present ability to <strong>direct the use</strong> of the economic resource; AND</li>
+        <li>Obtain the <strong>economic benefits</strong> that may flow from it</li>
+        <li>If one party controls a resource → <span class="nt">no other party controls it</span></li>
+        <li>Usually arises from ability to enforce legal rights — but can arise from other means (e.g., keeping know-how secret)</li>
+        <li>In principal-agent relationship: resources held by agent are NOT assets of the agent</li>
+      </ul>
+    </div>
+    <div class="exam"><strong>Exam Tip</strong>Related rights from legal ownership (right to use, sell, pledge an object) are normally bundled as a single asset (e.g., "Land") as this provides the most concise faithful representation.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Definition of Liability — Three Criteria</div>
+    <div class="flow-row">
+      <div class="flow-step">Entity has an obligation</div>
+      <div class="flow-arr">+</div>
+      <div class="flow-step">To transfer an economic resource</div>
+      <div class="flow-arr">+</div>
+      <div class="flow-step">Present obligation from past events</div>
+      <div class="flow-arr">→</div>
+      <div class="flow-step" style="background:#eff6ff;border-color:#2563aa"><strong>LIABILITY</strong></div>
+    </div>
+    <table class="tbl" style="margin-top:12px">
+      <tr><th>Criterion</th><th>Key Points</th></tr>
+      <tr><td><strong>Obligation</strong></td><td>Duty or responsibility the entity has no practical ability to avoid. Always owed to another party. Can be a legal obligation or <span class="kt">constructive obligation</span> (arises from customary practices, published policies, specific statements).</td></tr>
+      <tr><td><strong>Transfer of economic resource</strong></td><td>Includes: pay cash, deliver goods/services, exchange resources on unfavourable terms, transfer on occurrence of uncertain future event, issue financial instrument. Need not be certain — only potential required.</td></tr>
+      <tr><td><strong>Present obligation from past events</strong></td><td>Entity has already obtained economic benefits OR taken an action, AND as a consequence will/may need to transfer a resource it would not otherwise have had to. A present obligation can exist even if transfer is not enforceable until a future date.</td></tr>
+    </table>
+    <div class="imp"><strong>Executory Contract</strong>Contract equally unperformed by both parties. Creates a combined right and obligation — treated as a single asset (if terms currently favourable) or liability (if currently unfavourable). Neither party has a pure standalone obligation yet.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Common Aspects — Assets &amp; Liabilities</div>
+    <table class="tbl">
+      <tr><th>Concept</th><th>Description</th></tr>
+      <tr><td><strong>Unit of Account</strong></td><td>The right/obligation or group thereof to which recognition criteria and measurement concepts apply. Selected to provide relevant information that faithfully represents substance. May differ for recognition vs measurement.</td></tr>
+      <tr><td><strong>Substance of Contractual Rights</strong></td><td>All terms (explicit or implicit) are considered unless they have no substance. Terms with no substance (do not bind either party, or options with no practical ability to exercise) are disregarded. Group of contracts may be treated as single unit of account.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- C2-S6: Recognition -->
+<div class="sec-body" id="c2s6">
+  <div class="ch-title">Unit 6: Recognition and Derecognition</div>
+  <div class="card">
+    <div class="card-title">The Recognition Process</div>
+    <div class="imp"><strong>Definition</strong>Recognition is the process of capturing for inclusion in the balance sheet or the statement of profit and loss an item that meets the definition of one of the elements. The recognised amount is called the <strong>carrying amount</strong>.</div>
+    <div class="flow-row">
+      <div class="flow-step">Opening Balance Sheet</div>
+      <div class="flow-arr">+</div>
+      <div class="flow-step">Statement of P&amp;L (Income − Expenses)</div>
+      <div class="flow-arr">+</div>
+      <div class="flow-step">Other equity changes</div>
+      <div class="flow-arr">=</div>
+      <div class="flow-step">Closing Balance Sheet</div>
+    </div>
+    <div class="warn"><strong>Matching Concept</strong>Simultaneous recognition of income and related expenses is sometimes called "matching of costs with income." However, matching is <span class="nt">NOT an objective</span> of the Conceptual Framework under Ind AS. The Framework does not allow recognition of items that do not meet element definitions merely to achieve matching.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Recognition Criteria — Both Must Be Met</div>
+    <table class="tbl">
+      <tr><th>Criterion</th><th>When recognition may NOT be appropriate</th></tr>
+      <tr><td><strong>Relevant information</strong></td><td>(a) Uncertain whether asset or liability exists (existence uncertainty); (b) Probability of inflow/outflow of economic benefits is low</td></tr>
+      <tr><td><strong>Faithful representation</strong></td><td>Level of measurement uncertainty is so high that no single amount provides a faithful representation; or accounting mismatch would result from recognising one but not the related asset/liability</td></tr>
+    </table>
+    <div class="exam"><strong>Exam Tip</strong>Presence of one factor (e.g., low probability) does NOT automatically mean recognition lacks relevance. It is a combination of factors. Even if an item is NOT recognised, the entity may still need to disclose it in the notes.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Measurement Uncertainty — When Very High</div>
+    <ul class="note-list">
+      <li>Range of possible outcomes is <strong>exceptionally wide</strong> and probability of each is exceptionally difficult to estimate</li>
+      <li>Measure is <strong>exceptionally sensitive to small changes</strong> in probability estimates (low probability but very high magnitude)</li>
+      <li>Requires <strong>exceptionally difficult or subjective allocations</strong> of cash flows not solely relating to the asset/liability</li>
+    </ul>
+    <div class="imp"><strong>Response</strong>In such cases, the most useful info may be the highly uncertain estimate accompanied by descriptions and explanations — OR a slightly less relevant but more certain measure. In very limited cases where no measure provides useful info → do not recognise.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Derecognition</div>
+    <div class="imp"><strong>Definition</strong>Removal of all or part of a recognised asset or liability from an entity's balance sheet.</div>
+    <table class="tbl">
+      <tr><th>Element</th><th>When derecognition normally occurs</th></tr>
+      <tr><td>Asset</td><td>When the entity <strong>loses control</strong> of all or part of the recognised asset</td></tr>
+      <tr><td>Liability</td><td>When the entity <strong>no longer has a present obligation</strong> for all or part of the recognised liability</td></tr>
+    </table>
+    <table class="tbl" style="margin-top:10px">
+      <tr><th>Accounting Requirement</th><th>Detail</th></tr>
+      <tr><td>Derecognise transferred component</td><td>Derecognise consumed/collected/fulfilled/transferred portion; recognise resulting income and expenses</td></tr>
+      <tr><td>Continue recognising retained component</td><td>Retained component becomes a separate unit of account; no income/expenses on retained component unless measurement basis changes</td></tr>
+      <tr><td>Presentation &amp; disclosure</td><td>Retained component shown separately; income/expenses from derecognition shown separately; explanatory information provided</td></tr>
+    </table>
+    <div class="warn"><strong>When derecognition is NOT appropriate</strong>If an entity apparently transfers an asset but retains exposure to significant positive or negative variations in economic benefits → it may still control the asset. If asset is transferred to a party holding it as an agent → transferor still controls.</div>
+  </div>
+</div>
+
+<!-- C2-S7: Measurement -->
+<div class="sec-body" id="c2s7">
+  <div class="ch-title">Unit 7: Measurement</div>
+  <div class="card">
+    <div class="card-title">Five Measurement Bases</div>
+    <table class="tbl">
+      <tr><th>Basis</th><th>Category</th><th>Assets</th><th>Liabilities</th></tr>
+      <tr><td><strong>Historical Cost</strong></td><td>Entry value</td><td>Consideration paid + transaction costs; reduced for depreciation, impairment, collections</td><td>Consideration received − transaction costs; reduced for fulfilment; increased if onerous</td></tr>
+      <tr><td><strong>Fair Value</strong></td><td>Current value (Exit)</td><td colspan="2">Price to sell asset / transfer liability in orderly transaction between market participants at measurement date. Market-participant assumptions. Excludes transaction costs.</td></tr>
+      <tr><td><strong>Value in Use</strong></td><td>Current value (Exit — assets)</td><td>Present value of cash flows from use and ultimate disposal. Entity-specific. Includes PV of disposal costs.</td><td>N/A</td></tr>
+      <tr><td><strong>Fulfilment Value</strong></td><td>Current value (Exit — liabilities)</td><td>N/A</td><td>Present value of cash entity expects to transfer in fulfilling the liability. Entity-specific. Includes PV of settlement costs.</td></tr>
+      <tr><td><strong>Current Cost</strong></td><td>Entry value</td><td>Consideration that would be paid + transaction costs that would be incurred (at measurement date)</td><td>Consideration that would be received − transaction costs that would be incurred (at measurement date)</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Historical Cost vs Current Value — Key Differences</div>
+    <table class="tbl">
+      <tr><th>Factor</th><th>Historical Cost</th><th>Current Value</th></tr>
+      <tr><td>Monetary information derived from</td><td>Price of original transaction</td><td>Information updated to reflect conditions at measurement date</td></tr>
+      <tr><td>Value changes reflected?</td><td>No — except impairment or onerous liability</td><td>Yes — reflects changes since previous measurement date</td></tr>
+    </table>
+    <div class="imp"><strong>Amortised Cost</strong>A way to apply historical cost to financial assets and liabilities. Reflects estimated future cash flows discounted at a rate determined at initial recognition. Updated for interest accrual, impairment, and receipts/payments. For variable rate instruments, the discount rate is updated.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Fair Value vs Value in Use / Fulfilment Value</div>
+    <table class="tbl">
+      <tr><th>Factor</th><th>Fair Value</th><th>Value in Use / Fulfilment Value</th></tr>
+      <tr><td>Perspective</td><td>Market participants (external)</td><td>Entity-specific (internal)</td></tr>
+      <tr><td>How determined</td><td>Observe prices in active market OR cash-flow based measurement techniques</td><td>Cannot be observed — always uses cash-flow based techniques</td></tr>
+      <tr><td>Transaction costs</td><td>Neither on initial recognition nor on disposal/settlement are included</td><td>Initial recognition costs excluded; but PV of costs on disposal/settlement ARE included</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Factors for Selecting a Measurement Basis</div>
+    <div class="grid2">
+      <div class="mini-card">
+        <div class="mc-title">Relevance — Asset/Liability Characteristics</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li>If value is sensitive to market factors → historical cost may not be relevant (e.g., derivatives cannot use amortised cost)</li>
+            <li>If entity holds assets solely for use / collecting contractual cash flows → fair value changes may lack predictive value</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mc-title">Relevance — Contribution to Cash Flows</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li>Indirect cash flows (assets used in combination, e.g., PP&amp;E, inventory) → historical or current cost likely more relevant</li>
+            <li>Direct cash flows (assets sold independently, financial instruments) → current value likely more relevant</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mc-title">Faithful Representation — Consistency</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li>Related assets and liabilities → use same measurement basis to avoid accounting mismatch</li>
+            <li>Measurement inconsistencies → financial statements may not faithfully represent financial position</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mc-title">Faithful Representation — Certainty</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li>High measurement uncertainty may prevent faithful representation → consider a different basis</li>
+            <li>Outcome uncertainty ≠ Existence uncertainty ≠ Measurement uncertainty (though related)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="exam"><strong>Exam Tip — More Than One Measurement Basis</strong>When more than one basis is needed, use a single basis for the BS item and provide additional info in notes. Alternatively, use current value in the BS but a different basis (e.g., amortised cost) for P&amp;L — with the remainder going to OCI. Classic example: financial assets at FVOCI.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Initial Measurement</div>
+    <table class="tbl">
+      <tr><th>Transaction Type</th><th>Treatment</th></tr>
+      <tr><td>At-market (cash)</td><td>Cost at initial recognition ≈ fair value unless transaction costs are significant. Same basis for initial and subsequent measurement.</td></tr>
+      <tr><td>At-market (exchange of assets)</td><td>Initial measure of asset acquired determines whether income/expense arises. If subsequently measured at fair value → recognise gain/loss at initial recognition.</td></tr>
+      <tr><td>Off-market (e.g., interest-free loan, government grant, donated asset)</td><td>Measure at <span class="kt">deemed cost</span> (current value at initial recognition). Difference from consideration given/received → recognised as income/expenses. E.g., parent interest-free loan to subsidiary → measure at FV; difference = equity contribution.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- C2-S8: Presentation -->
+<div class="sec-body" id="c2s8">
+  <div class="ch-title">Unit 8: Presentation and Disclosure</div>
+  <div class="card">
+    <div class="card-title">Objectives and Principles</div>
+    <ul class="note-list">
+      <li>Balance between: (a) <strong>flexibility</strong> to provide entity-specific relevant information and (b) <strong>comparability</strong> across periods and entities</li>
+      <li><span class="kt">Entity-specific information</span> is more useful than standardised descriptions</li>
+      <li>Duplication in different parts of financial statements is usually unnecessary and reduces understandability</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Classification</div>
+    <div class="imp"><strong>Definition</strong>Sorting of assets, liabilities, equity, income or expenses on the basis of shared characteristics (nature, function, measurement basis) for presentation and disclosure purposes.</div>
+    <table class="tbl">
+      <tr><th>Classification Area</th><th>Key Rules</th></tr>
+      <tr><td>Assets &amp; Liabilities</td><td>Applied to unit of account. May be appropriate to separate into components (e.g., current and non-current) when it enhances usefulness.</td></tr>
+      <tr><td>Offsetting</td><td>Recognising both asset and liability as separate units but grouping into a single net amount. <span class="nt">Generally not appropriate</span> — classifies dissimilar items together. Differs from treating a set of rights and obligations as a single unit of account.</td></tr>
+      <tr><td>Equity</td><td>Classify equity claims separately if they have different characteristics (e.g., distributable vs non-distributable reserves)</td></tr>
+      <tr><td>Income &amp; Expenses</td><td>Apply to unit of account selected; or to components if they have different characteristics (e.g., interest accrual vs fair value changes)</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Profit or Loss vs Other Comprehensive Income (OCI)</div>
+    <ul class="note-list">
+      <li>All income and expenses are, in principle, included in <strong>profit or loss</strong></li>
+      <li>In exceptional circumstances, ICAI may decide items go to <span class="kt">OCI</span> — when it results in P&amp;L providing more relevant info or a more faithful representation</li>
+      <li>OCI items are generally <strong>reclassified to P&amp;L</strong> in a future period when it provides more relevant information</li>
+      <li>Exception: if no clear basis exists for reclassification (e.g., PP&amp;E revaluation surplus) → ICAI may decide no reclassification</li>
+    </ul>
+    <div class="exam"><strong>Exam Tip</strong>The principle is: P&amp;L is the primary performance statement. OCI is used only when P&amp;L would be misleading or less relevant if those gains/losses were included. This is why PP&amp;E revaluation gains go to OCI (no reclassification) but FVOCI financial asset changes go to OCI with reclassification on derecognition.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Aggregation</div>
+    <ul class="note-list">
+      <li>Adding together items with shared characteristics in the same classification</li>
+      <li>Too little aggregation → obscures info in excessive detail</li>
+      <li>Too much aggregation → obscures relevant differences</li>
+      <li>Balance sheet and P&amp;L → summarised info; detailed info in <strong>notes</strong></li>
+    </ul>
+  </div>
+</div>
+
+<!-- C2-S9: Capital -->
+<div class="sec-body" id="c2s9">
+  <div class="ch-title">Unit 9: Concepts of Capital and Capital Maintenance</div>
+  <div class="card">
+    <div class="card-title">Two Concepts of Capital</div>
+    <div class="grid2">
+      <div class="mini-card">
+        <div class="mc-title">Financial Concept</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li>Capital = invested money / purchasing power = <strong>net assets or equity</strong></li>
+            <li>Used when users are concerned with maintaining <strong>nominal invested capital</strong> or <strong>purchasing power</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mc-title">Physical Concept</div>
+        <div class="mc-val">
+          <ul class="note-list">
+            <li>Capital = operating capability = <strong>productive capacity</strong></li>
+            <li>Used when users' main concern is the <strong>operating capability</strong> of the entity</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="imp"><strong>Key Principle</strong>An entity has maintained its capital if it has as much capital at the end of the period as at the beginning. Any amount <strong>over and above</strong> that required to maintain capital = <strong>Profit</strong>.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Three Variants of Capital Maintenance</div>
+    <table class="tbl">
+      <tr><th>Concept</th><th>Profit Earned When…</th><th>Price Changes Treated As…</th><th>Measurement Basis</th></tr>
+      <tr><td><strong>Financial — Nominal Monetary Units</strong></td><td>Financial amount of net assets at end exceeds beginning (excl. owner contributions/distributions)</td><td>Holding gains = conceptually profits (may not be recognised until disposal)</td><td>Historical cost</td></tr>
+      <tr><td><strong>Financial — Constant Purchasing Power</strong></td><td>Increase in invested purchasing power</td><td>Only excess above general price level increase = profit; rest = <span class="kt">capital maintenance adjustment</span> (equity)</td><td>General price index adjusted</td></tr>
+      <tr><td><strong>Physical Capital Maintenance</strong></td><td>Physical productive capacity at end exceeds beginning (excl. owner contributions/distributions)</td><td>ALL price changes = <span class="kt">capital maintenance adjustments</span> (equity) — NOT profit</td><td>Current cost (specific price index)</td></tr>
+    </table>
+    <div class="warn"><strong>Principal Difference</strong>The key distinction between financial and physical capital maintenance is the treatment of the effects of <strong>changes in prices of assets and liabilities</strong>.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Capital Maintenance Adjustments</div>
+    <ul class="note-list">
+      <li>Revaluation or restatement of assets/liabilities → increases or decreases in equity</li>
+      <li>These meet the definition of income/expenses — but under certain capital maintenance concepts they are <strong>NOT included in the income statement</strong></li>
+      <li>Instead, they are included in equity as <span class="kt">capital maintenance adjustments</span> or <span class="kt">revaluation reserves</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Illustration — Numerical Comparison of All Three Bases</div>
+    <div class="phase-box">
+      <h4>Facts: Trader starts with ₹12,000 (6,000 units @ ₹2). Sells @ ₹3. Withdraws ₹6,000.</h4>
+      <ul class="note-list">
+        <li>General price index: opening 100, closing 120</li>
+        <li>Specific price of product at year-end: ₹2.50 per unit</li>
+      </ul>
+    </div>
+    <table class="tbl">
+      <tr><th>Basis</th><th>Capital to Maintain</th><th>Closing Capital</th><th>Retained Profit</th><th>Interpretation</th></tr>
+      <tr><td>Financial — Historical Cost</td><td>₹12,000</td><td>₹12,000</td><td>₹Nil</td><td>Capital maintained; trader can repeat the cycle</td></tr>
+      <tr><td>Financial — Constant Purchasing Power</td><td>₹14,400 (₹12,000 × 120/100)</td><td>₹12,000</td><td><span class="nt">(₹2,400)</span></td><td>Capital NOT maintained; drawings should have been restricted to ₹3,600</td></tr>
+      <tr><td>Physical Capital Maintenance</td><td>₹15,000 (6,000 × ₹2.50)</td><td>₹9,000</td><td><span class="nt">(₹6,000)</span></td><td>Capital NOT maintained; trader should have made no drawings at all</td></tr>
+    </table>
+    <div class="exam"><strong>Exam Tip</strong>Physical capital maintenance uses the <em>specific</em> price index of the product; financial (constant purchasing power) uses the <em>general</em> price index. The difference between the two = the holding gain that is treated as profit under the financial concept but as a capital maintenance adjustment under the physical concept.</div>
+  </div>
+</div>
+
+</div><!-- end ch2Wrap -->
+
+<div id="comingSoon" style="display:none" class="coming">
+  <div class="coming-icon">📖</div>
+  <h3>Chapter notes coming soon</h3>
+  <p>Upload the next chapter PDF and the notes will be added here.</p>
+</div>
+
+</div><!-- end main -->
+</div><!-- end body-row -->
+</div><!-- end app -->
+
+<script>
+/* ── Chapter 1 section nav ── */
+const sections=document.querySelectorAll('#ch1Wrap .sec-body');
+const buttons=document.querySelectorAll('#secNav .sec-btn');
+function showSec(n){
+  sections.forEach((s,i)=>{s.classList.toggle('visible',i===n)});
+  buttons.forEach((b,i)=>{b.classList.toggle('active',i===n)});
+  document.getElementById('secNav').scrollTo({left:buttons[n].offsetLeft-20,behavior:'smooth'});
+}
+
+/* ── Chapter 2 section nav ── */
+const sections2=document.querySelectorAll('#ch2Wrap .sec-body');
+const buttons2=document.querySelectorAll('#secNav2 .sec-btn');
+function showSec2(n){
+  sections2.forEach((s,i)=>{s.classList.toggle('visible',i===n)});
+  buttons2.forEach((b,i)=>{b.classList.toggle('active',i===n)});
+  document.getElementById('secNav2').scrollTo({left:buttons2[n].offsetLeft-20,behavior:'smooth'});
+}
+
+/* ── Sidebar chapter switching ── */
+function setChapter(el,n){
+  if(el.classList.contains('soon'))return;
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ch1Wrap').style.display=n===1?'block':'none';
+  document.getElementById('ch2Wrap').style.display=n===2?'block':'none';
+  document.getElementById('comingSoon').style.display=(n===1||n===2)?'none':'block';
+}
+
+/* ── Search ── */
+function doSearch(q,e){
+  if(!q||q.length<2)return;
+  if(e.key==='Enter'){
+    const all=document.querySelectorAll('.sec-body');
+    for(let i=0;i<all.length;i++){
+      if(all[i].innerText.toLowerCase().includes(q.toLowerCase())){
+        if(all[i].closest('#ch1Wrap')){
+          document.getElementById('ch1Wrap').style.display='block';
+          document.getElementById('ch2Wrap').style.display='none';
+          document.getElementById('comingSoon').style.display='none';
+          const idx=Array.from(sections).indexOf(all[i]);
+          if(idx>=0) showSec(idx);
+        } else if(all[i].closest('#ch2Wrap')){
+          document.getElementById('ch1Wrap').style.display='none';
+          document.getElementById('ch2Wrap').style.display='block';
+          document.getElementById('comingSoon').style.display='none';
+          const idx=Array.from(sections2).indexOf(all[i]);
+          if(idx>=0) showSec2(idx);
+        }
+        return;
+      }
+    }
+  }
+}
+</script>
