@@ -96,15 +96,68 @@ html,body{height:100%;background:#f4f6fb;font-family:-apple-system,BlinkMacSyste
 .illus-box h4{font-size:12px;font-weight:700;color:#9a3412;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px}
 .illus-q{font-size:13px;color:#7c2d12;font-style:italic;margin-bottom:8px;line-height:1.5}
 .illus-a{font-size:13px;color:#334155;line-height:1.6}
+/* ── Annotation Tool ── */
+#annotBar{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1e3a5f;border-radius:40px;padding:8px 16px;display:flex;align-items:center;gap:10px;z-index:9999;box-shadow:0 6px 24px rgba(0,0,0,0.30);user-select:none}
+#annotBar .ab-label{font-size:11px;color:rgba(255,255,255,0.65);font-weight:500;white-space:nowrap}
+.ab-color{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform 0.15s,border-color 0.15s;flex-shrink:0}
+.ab-color:hover,.ab-color.ab-active{transform:scale(1.2);border-color:#fff}
+.ab-sep{width:1px;height:20px;background:rgba(255,255,255,0.2)}
+.ab-btn{background:rgba(255,255,255,0.12);color:#fff;border:none;border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap}
+.ab-btn:hover{background:rgba(255,255,255,0.22)}
+.ab-mode{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap}
+.ab-mode.on{background:#2563aa;border-color:#2563aa;color:#fff}
+.annot-hl{border-radius:3px;padding:0 1px;cursor:pointer}
+.annot-hl:hover{opacity:0.8}
+.search-hl{background:#fde68a;color:#92400e;border-radius:3px;padding:0 2px}
 </style>
 
 <div class="app">
+
+<!-- ── Annotation Toolbar ── -->
+<div id="annotBar">
+  <!-- Student view (default) -->
+  <div id="abStudentView" style="display:flex;align-items:center;gap:10px">
+    <span class="ab-label">👁 Teacher Highlights</span>
+    <div class="ab-sep"></div>
+    <span id="abSyncDot" style="font-size:10px;color:rgba(255,255,255,0.45)">⏳ Connecting…</span>
+    <div class="ab-sep"></div>
+    <button class="ab-btn" onclick="showTeacherLogin()">🔑 Teacher Login</button>
+  </div>
+  <!-- Teacher view (after login) -->
+  <div id="abTeacherView" style="display:none;align-items:center;gap:10px">
+    <span class="ab-label" style="color:#fde68a">✏️ Teacher Mode</span>
+    <div class="ab-sep"></div>
+    <div class="ab-color ab-active" style="background:#fde68a" title="Yellow" onclick="setAnnotColor(this,'#fde68a','#92400e')"></div>
+    <div class="ab-color" style="background:#bbf7d0" title="Green"  onclick="setAnnotColor(this,'#bbf7d0','#064e3b')"></div>
+    <div class="ab-color" style="background:#fecaca" title="Red"    onclick="setAnnotColor(this,'#fecaca','#7f1d1d')"></div>
+    <div class="ab-color" style="background:#bfdbfe" title="Blue"   onclick="setAnnotColor(this,'#bfdbfe','#1e3a5f')"></div>
+    <div class="ab-color" style="background:#e9d5ff" title="Purple" onclick="setAnnotColor(this,'#e9d5ff','#4c1d95')"></div>
+    <div class="ab-sep"></div>
+    <span id="abSyncDotT" style="font-size:10px;color:rgba(255,255,255,0.45)">⏳</span>
+    <button class="ab-btn" onclick="clearAllAnnotations()" style="background:rgba(239,68,68,0.3)">🗑 Clear All</button>
+    <button class="ab-btn" onclick="teacherLogout()">🔒 Lock</button>
+  </div>
+</div>
+
+<!-- Teacher Login Modal -->
+<div id="teacherModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:99999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:28px 32px;width:300px;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+    <div style="font-size:16px;font-weight:600;color:#1e3a5f;margin-bottom:6px">🔑 Teacher Login</div>
+    <div style="font-size:12px;color:#64748b;margin-bottom:18px">Enter your password to enable annotation editing</div>
+    <input id="teacherPwInput" type="password" placeholder="Password" style="width:100%;padding:9px 12px;border:1.5px solid #e4e8f0;border-radius:8px;font-size:14px;outline:none;margin-bottom:12px" onkeydown="if(event.key==='Enter')submitTeacherLogin()">
+    <div id="teacherPwErr" style="font-size:12px;color:#dc2626;margin-bottom:10px;display:none">Incorrect password. Try again.</div>
+    <div style="display:flex;gap:8px">
+      <button onclick="submitTeacherLogin()" style="flex:1;background:#1e3a5f;color:#fff;border:none;border-radius:8px;padding:9px;font-size:13px;cursor:pointer;font-weight:500">Login</button>
+      <button onclick="closeTeacherModal()" style="flex:1;background:#f1f5f9;color:#475569;border:none;border-radius:8px;padding:9px;font-size:13px;cursor:pointer">Cancel</button>
+    </div>
+  </div>
+</div>
 <div class="hdr">
   <div class="hdr-left">
     <button class="toggle-btn" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
     <div><div class="hdr-title">CA Final – Financial Reporting</div><div class="hdr-sub">Study Notes · ICAI Syllabus</div></div>
   </div>
-  <div class="search-wrap"><span class="si">🔍</span><input type="text" placeholder="Search notes… (press Enter)" onkeyup="if(this.value.length===0)clearHighlights();doSearch(this.value,event)"></div>
+  <div class="search-wrap"><span class="si">🔍</span><input type="text" id="searchInput" placeholder="Search notes… (press Enter)" oninput="liveHighlight(this.value)" onkeydown="if(event.key==='Enter')doSearch(this.value,event)"></div>
 </div>
 
 <div class="body-row">
@@ -121,7 +174,8 @@ html,body{height:100%;background:#f4f6fb;font-family:-apple-system,BlinkMacSyste
   </div>
   <div class="sb-group-hdr" id="ch4GrpHdr" onclick="toggleGroup('ch4GrpBody','ch4GrpHdr')"><span class="sb-dot done"></span>Ch 4 · Measurement Policies<span class="sb-chevron">▶</span></div>
   <div class="sb-sub" id="ch4GrpBody">
-    <div class="sb-item sub" id="ch4u1Btn" onclick="setUnit4(this,'ch4u1')"><span class="sb-dot" style="background:#2563aa"></span>Unit 1 · Ind AS 8</div>
+    <div class="sb-item sub" id="ch4u1Btn" onclick="setUnit4(this,'ch4u1')"><span class="sb-dot done"></span>Unit 1 · Ind AS 8</div>
+    <div class="sb-item sub" id="ch4u2Btn" onclick="setUnit4(this,'ch4u2')"><span class="sb-dot done"></span>Unit 2 · Ind AS 10</div>
   </div>
   <div class="sb-item soon"><span class="sb-dot"></span>Ch 5 · Other Standards</div>
   <div class="sb-item soon"><span class="sb-dot"></span>Ch 6 · Ind AS 8 &amp; 10</div>
@@ -3771,6 +3825,704 @@ html,body{height:100%;background:#f4f6fb;font-family:-apple-system,BlinkMacSyste
 
 </div><!-- end ch4u1Wrap -->
 
+<!-- ══════════════════════════════════════════════════
+     CHAPTER 4 · UNIT 2 · IND AS 10
+════════════════════════════════════════════════════ -->
+<div id="ch4u2Wrap" style="display:none">
+<div class="sec-nav" id="secNavCh4U2">
+  <button class="sec-btn active" onclick="showSecCh4U2(0)">Overview</button>
+  <button class="sec-btn" onclick="showSecCh4U2(1)">Key Definitions</button>
+  <button class="sec-btn" onclick="showSecCh4U2(2)">Date of Approval</button>
+  <button class="sec-btn" onclick="showSecCh4U2(3)">Types of Events</button>
+  <button class="sec-btn" onclick="showSecCh4U2(4)">Adjusting Events</button>
+  <button class="sec-btn" onclick="showSecCh4U2(5)">Non-Adjusting Events</button>
+  <button class="sec-btn" onclick="showSecCh4U2(6)">Special Cases</button>
+  <button class="sec-btn" onclick="showSecCh4U2(7)">Dividends</button>
+  <button class="sec-btn" onclick="showSecCh4U2(8)">Disclosures</button>
+  <button class="sec-btn" onclick="showSecCh4U2(9)">Non-Cash Distribution</button>
+  <button class="sec-btn" onclick="showSecCh4U2(10)">Ind AS 10 vs AS 4</button>
+  <button class="sec-btn" onclick="showSecCh4U2(11)">Illustrations</button>
+</div>
+
+<!-- ── S0: Overview ── -->
+<div class="sec-body visible" id="ch4u2s0">
+  <div class="ch-title">Chapter 4 · Unit 2: Ind AS 10 — Events After the Reporting Period</div>
+  <div class="ch-subtitle">Guidance on what events occurring after the reporting period to recognise, adjust or disclose</div>
+  <div class="quick-grid">
+    <div class="qc"><div class="qc-num">2</div><div class="qc-lbl">Types of events</div></div>
+    <div class="qc"><div class="qc-num">AS 4</div><div class="qc-lbl">Old standard replaced</div></div>
+    <div class="qc"><div class="qc-num">4</div><div class="qc-lbl">Key differences vs IAS 10</div></div>
+    <div class="qc"><div class="qc-num">1 Carve-Out</div><div class="qc-lbl">Long-term loan breach</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Why Ind AS 10 Exists</div>
+    <ul class="note-list">
+      <li>There is always a <span class="kt">time gap</span> between the end of the reporting period and the date financial statements are made public</li>
+      <li>Events during this gap may have <strong>far-reaching effects</strong> on the business</li>
+      <li>Ignoring such events could <strong>mislead users</strong> of financial statements</li>
+      <li>Ind AS 10 prescribes: (a) When to <span class="kt">adjust</span> financial statements, and (b) What to <span class="kt">disclose</span> about post-period events</li>
+      <li>Also requires that going concern basis be <strong>abandoned</strong> if post-period events make it inappropriate</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Four Core Topics of Ind AS 10</div>
+    <div class="grid2">
+      <div class="phase-box" style="border-color:#bfdbfe">
+        <h4 style="color:#1e3a5f">📋 Recognition &amp; Measurement</h4>
+        <ul class="note-list">
+          <li>Adjusting events → adjust amounts</li>
+          <li>Non-adjusting → do NOT adjust</li>
+        </ul>
+      </div>
+      <div class="phase-box" style="border-color:#fed7aa">
+        <h4 style="color:#9a3412">⚠️ Special Cases</h4>
+        <ul class="note-list">
+          <li>Long-term loan arrangements (Carve-Out)</li>
+          <li>Going concern assessment</li>
+        </ul>
+      </div>
+      <div class="phase-box" style="border-color:#bbf7d0">
+        <h4 style="color:#065f46">💰 Distribution of Non-Cash Assets</h4>
+        <ul class="note-list">
+          <li>Dividend recognition trigger</li>
+          <li>Measurement at fair value</li>
+        </ul>
+      </div>
+      <div class="phase-box" style="border-color:#e9d5ff">
+        <h4 style="color:#4c1d95">📢 Disclosures</h4>
+        <ul class="note-list">
+          <li>Date of approval for issue</li>
+          <li>Material non-adjusting events</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Scope of Ind AS 10</div>
+    <ul class="note-list">
+      <li><strong>Accounting</strong> for events after the reporting period</li>
+      <li><strong>Disclosure</strong> of events after the reporting period</li>
+    </ul>
+    <div class="imp"><strong>Objective (dual)</strong>1. Prescribe WHEN to adjust financial statements for post-period events<br>2. Prescribe WHAT disclosures to give about the date of approval and post-period events</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Quick Section Navigator</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Topic</th><th>Key Rule</th></tr>
+      <tr><td>1</td><td>Key Definitions</td><td>Events, date of approval</td></tr>
+      <tr><td>2</td><td>Date of Approval</td><td>Board approval = cut-off</td></tr>
+      <tr><td>3</td><td>Types of Events</td><td>Adjusting vs Non-Adjusting</td></tr>
+      <tr><td>4</td><td>Adjusting Events</td><td>Adjust amounts — 5 examples</td></tr>
+      <tr><td>5</td><td>Non-Adjusting Events</td><td>Disclose only if material</td></tr>
+      <tr><td>6</td><td>Special Cases</td><td>Long-term loans + Going Concern</td></tr>
+      <tr><td>7</td><td>Dividends</td><td>NOT a liability at period end</td></tr>
+      <tr><td>8</td><td>Disclosures</td><td>Date of approval, non-adj events</td></tr>
+      <tr><td>9</td><td>Non-Cash Distribution</td><td>Appendix A to Ind AS 10</td></tr>
+      <tr><td>10</td><td>Ind AS 10 vs AS 4</td><td>4 key differences + Carve-Out</td></tr>
+      <tr><td>11</td><td>Illustrations</td><td>ICAI study material solved</td></tr>
+    </table>
+  </div>
+</div><!-- /ch4u2s0 -->
+
+<!-- ── S1: Key Definitions ── -->
+<div class="sec-body" id="ch4u2s1">
+  <div class="ch-title">Key Definitions — Ind AS 10</div>
+  <div class="warn"><strong>Exam Tip</strong>Know the three key definitions verbatim: Events after the Reporting Period, Adjusting Events, and Non-Adjusting Events. These underpin all application questions.</div>
+
+  <div class="card">
+    <div class="card-title">1. Events after the Reporting Period</div>
+    <div class="def-grid">
+      <div class="def-item">
+        <div class="def-term">Definition (Para 3)</div>
+        <div class="def-text">Those events, <strong>favourable and unfavourable</strong>, that occur between the <span class="kt">end of the reporting period</span> and the <span class="kt">date when the financial statements are approved for issue</span> by the Board of Directors (company) or corresponding approving authority (other entities).</div>
+      </div>
+    </div>
+    <div class="imp"><strong>Timeline</strong>Start of period → [Reporting Date] → ← Events after reporting period → [Date of Board Approval] → [Shareholders' Meeting] — Only the period up to Board approval is covered by Ind AS 10.</div>
+    <div class="illus-box">
+      <h4>Example 1</h4>
+      <div class="illus-q">Financial year ends 31st March 20X2. Board approves financial statements on 15th May 20X2. What is the "after the reporting period"?</div>
+      <div class="illus-a">The period between <strong>31 March 20X2 and 15 May 20X2</strong>. Any event occurring in this window must be considered as an event after the reporting period.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2. Adjusting Events</div>
+    <div class="def-item" style="border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px">
+      <div class="def-text"><strong>Events that provide evidence of conditions that existed AT THE END of the reporting period.</strong><br>→ Requires adjustment to amounts in financial statements.</div>
+    </div>
+    <div class="exam"><strong>Memory Hook</strong>Adjusting = Evidence of PAST condition (existed at year-end). The event is a window into what was already true.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">3. Non-Adjusting Events</div>
+    <div class="def-item" style="border:1px solid #fecaca;border-radius:8px;padding:10px 14px">
+      <div class="def-text"><strong>Events that are indicative of conditions that arose AFTER the reporting period.</strong><br>→ No adjustment; only disclosure if material.</div>
+    </div>
+    <div class="exam"><strong>Memory Hook</strong>Non-Adjusting = NEW condition that arose post year-end. The event reveals something NEW, not something already in existence.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">4. Should only unfavourable events be reported?</div>
+    <div class="imp"><strong>NO — Both favourable AND unfavourable events must be considered</strong>The standard explicitly uses the phrase "favourable and unfavourable" in its definition. An entity must report both types of post-period events. Ignoring favourable events on the ground of conservatism is NOT permitted under Ind AS 10.</div>
+  </div>
+</div><!-- /ch4u2s1 -->
+
+<!-- ── S2: Date of Approval ── -->
+<div class="sec-body" id="ch4u2s2">
+  <div class="ch-title">Date of Approval of Financial Statements</div>
+  <div class="warn"><strong>Exam Alert</strong>The date of approval determines the cut-off for "events after reporting period". This is the most tested definitional concept in Ind AS 10.</div>
+
+  <div class="card">
+    <div class="card-title">Who is the Approving Authority?</div>
+    <table class="tbl">
+      <tr><th>Entity Type</th><th>Approving Authority</th><th>Date of Approval</th></tr>
+      <tr><td>Company</td><td>Board of Directors</td><td>Date of Board meeting approval</td></tr>
+      <tr><td>Any other entity</td><td>Corresponding approving authority (e.g., partners of a firm)</td><td>Date of approval by that authority</td></tr>
+    </table>
+    <div class="imp"><strong>Shareholders' Meeting (Para 5)</strong>Even if shareholders need to approve financial statements AFTER the Board, the date of Board approval is the relevant date for Ind AS 10. Shareholders' approval does NOT extend the cut-off period.</div>
+    <div class="imp"><strong>Supervisory Board (Para 6)</strong>If management must issue statements to a non-executive supervisory board, the date of approval is the date management approves for issue to that board — not the date the supervisory board approves.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Process Involved in Approval</div>
+    <ul class="note-list">
+      <li>Approval process varies by: (a) management structure, (b) statutory requirements, (c) procedures for preparing and finalising statements</li>
+      <li>If statements are <strong>reopened</strong> for further adjustments (e.g., fraud discovered after initial approval), the date of approval is the <strong>final</strong> approval date, not the initial one</li>
+      <li>Events after the reporting period include all events up to approval date, even if they occur <strong>after public announcement</strong> of partial financial information</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Key Illustrations</div>
+    <div class="illus-box">
+      <h4>Example 2 — Shareholders' AGM</h4>
+      <div class="illus-q">Board of ABC Ltd. approves financial statements on 5 May 20X1. AGM of shareholders held on 23 June 20X1. What is the date of approval?</div>
+      <div class="illus-a"><strong>5 May 20X1</strong> — Board approval is the relevant date. Shareholders' approval does not extend the cut-off. (Para 5)</div>
+    </div>
+    <div class="illus-box">
+      <h4>Example 3 — Supervisory Board</h4>
+      <div class="illus-q">Management approves for issue to supervisory board on 18 May 20X2. Supervisory board approves on 26 May 20X2. Filed with regulator on 17 July 20X2. What is approval date?</div>
+      <div class="illus-a"><strong>18 May 20X2</strong> — Date management approved for issue to supervisory board. (Para 6)</div>
+    </div>
+    <div class="illus-box">
+      <h4>Example — Fraud Discovered &amp; Reopened</h4>
+      <div class="illus-q">Board approved on 15 June 20X2. Management discovers major fraud, reopens books. Board re-approves on 30 June 20X2. What is the date of approval?</div>
+      <div class="illus-a"><strong>30 June 20X2</strong> — The final date of approval by the Board is the relevant date. When books are reopened, the later approval date applies.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Interim Financial Reports</div>
+    <ul class="note-list">
+      <li>Ind AS 10 applies to interim financial reports too — each interim report is evaluated on its own (per Ind AS 34)</li>
+      <li>Adjusting events between the end of the interim period and the Board's approval of the interim report must also be adjusted</li>
+    </ul>
+    <div class="exam"><strong>Illustration 2 from ICAI</strong>ABC Ltd. prepares Q1 report ending 30 June 20X1. Board approves on 15 July 20X1. Events between 1 July 20X1 and 15 July 20X1 that evidenced conditions at 30 June 20X1 → must be adjusted in Q1 report.</div>
+  </div>
+</div><!-- /ch4u2s2 -->
+
+<!-- ── S3: Types of Events ── -->
+<div class="sec-body" id="ch4u2s3">
+  <div class="ch-title">Types of Events After the Reporting Period</div>
+
+  <div class="card">
+    <div class="card-title">The Two-Category Framework</div>
+    <div class="grid2">
+      <div class="phase-box" style="border-color:#bfdbfe;background:#eff6ff">
+        <h4 style="color:#1e3a5f">✅ Adjusting Events</h4>
+        <ul class="note-list">
+          <li>Provide <strong>evidence</strong> of conditions that <strong>existed</strong> at the reporting date</li>
+          <li>→ <strong>Adjust</strong> amounts in financial statements</li>
+          <li>Condition pre-exists at year-end; event merely <em>confirms</em> or <em>quantifies</em> it</li>
+        </ul>
+      </div>
+      <div class="phase-box" style="border-color:#fecaca;background:#fff5f5">
+        <h4 style="color:#7f1d1d">❌ Non-Adjusting Events</h4>
+        <ul class="note-list">
+          <li>Indicative of conditions that <strong>arose after</strong> the reporting date</li>
+          <li>→ Do <strong>NOT adjust</strong>; only <strong>disclose</strong> if material</li>
+          <li>Condition did not exist at year-end; event is entirely new</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Decision Framework: Adjusting or Non-Adjusting?</div>
+    <div class="flow-row" style="flex-direction:column;gap:10px;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="flow-step">Did a condition EXIST at year-end?</div>
+        <div class="flow-arr">→ YES →</div>
+        <div class="flow-step" style="background:#dbeafe">Adjusting Event → Adjust FS</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="flow-step">Did the condition arise AFTER year-end?</div>
+        <div class="flow-arr">→ YES →</div>
+        <div class="flow-step" style="background:#fecaca">Non-Adjusting → Disclose only</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="flow-step">Is the non-adjusting event material?</div>
+        <div class="flow-arr">→ YES →</div>
+        <div class="flow-step" style="background:#fef9c3">Mandatory disclosure: nature + financial effect</div>
+      </div>
+    </div>
+    <div class="warn"><strong>The Crux (para 3)</strong>The difference between adjusting and non-adjusting depends on whether the event provides evidence for the existence of a <strong>condition at the end of the reporting period</strong>.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Special: Ind AS 10 Carve-Out (Long-term Loan Breach)</div>
+    <div class="imp"><strong>Carve-Out from IAS 10</strong>Under Ind AS 10 (but NOT under IAS 10): If a material provision of a long-term loan is breached on or before the reporting date (making it payable on demand), and the lender agrees BEFORE approval of FS to NOT demand payment — this lender agreement is treated as an <strong>Adjusting Event</strong> even though it normally would not be. This is India-specific.</div>
+  </div>
+</div><!-- /ch4u2s3 -->
+
+<!-- ── S4: Adjusting Events ── -->
+<div class="sec-body" id="ch4u2s4">
+  <div class="ch-title">Recognition &amp; Measurement of Adjusting Events</div>
+  <div class="imp"><strong>Rule (Para 8)</strong>An entity shall <strong>adjust the amounts recognised</strong> in its financial statements to reflect adjusting events after the reporting period.</div>
+
+  <div class="card">
+    <div class="card-title">5 Statutory Examples of Adjusting Events</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Event</th><th>Why Adjusting?</th><th>Treatment</th></tr>
+      <tr>
+        <td>(a)</td>
+        <td>Settlement of a <span class="kt">court case</span> after period-end confirming obligation existed at year-end</td>
+        <td>Court order provides evidence of obligation that existed at year-end</td>
+        <td>Adjust/recognise provision per Ind AS 37 (do NOT merely disclose as contingent liability)</td>
+      </tr>
+      <tr>
+        <td>(b)</td>
+        <td>Post-period <span class="kt">bankruptcy of a customer</span> / liquidation order</td>
+        <td>Confirms customer was credit-impaired at year-end</td>
+        <td>Adjust loss allowance under Ind AS 109 to full expected credit loss</td>
+      </tr>
+      <tr>
+        <td>(b)(ii)</td>
+        <td>Sale of <span class="kt">inventory after period-end</span></td>
+        <td>Provides evidence of NRV at year-end (if market conditions unchanged)</td>
+        <td>Value inventory at actual selling price (lower of cost/NRV) per Ind AS 2</td>
+      </tr>
+      <tr>
+        <td>(c)</td>
+        <td>Determination of <span class="kt">cost of assets / proceeds from sale</span> post period</td>
+        <td>Transaction occurred before year-end; only quantum determined later</td>
+        <td>Adjust the asset cost or proceeds in that reporting period</td>
+      </tr>
+      <tr>
+        <td>(d)</td>
+        <td>Determination of <span class="kt">profit-sharing / bonus</span> after period-end</td>
+        <td>Legal/constructive obligation existed at year-end; amount determined after</td>
+        <td>Recognise obligation (per Ind AS 19) if contract existed at year-end</td>
+      </tr>
+      <tr>
+        <td>(e)</td>
+        <td>Discovery of <span class="kt">fraud or errors</span> post period-end</td>
+        <td>Proves financial statements were incorrect as at year-end</td>
+        <td>Adjust/rectify the financial statements for that period</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Inventory NRV — Important Nuance</div>
+    <ul class="note-list">
+      <li>If inventories sold post-period <strong>at market prices with no change in market conditions</strong> → actual selling price = evidence of NRV → <span class="gt">Adjusting event</span></li>
+      <li>If inventories sold post-period but <strong>market conditions changed</strong> (e.g., surplus production, additional imports) → price change does NOT reflect year-end conditions → <span class="nt">Non-adjusting event</span></li>
+    </ul>
+    <div class="illus-box">
+      <h4>Example 5 — Inventory</h4>
+      <div class="illus-q">Entity A has 10 items at ₹500 cost each at year-end. All sold post-period at ₹450 each before FS approved. What is the NRV?</div>
+      <div class="illus-a"><strong>₹450</strong> — The post-period sale price provides evidence of NRV at year-end. Inventory should be valued at ₹450 (lower than ₹500 cost).</div>
+    </div>
+    <div class="illus-box">
+      <h4>Illustration 6 — Cars</h4>
+      <div class="illus-q">Company has 100 finished cars at ₹4,00,000 each on 31 March 20X2. On 30 April 20X2, new govt road tax rules reduce selling price to ₹3,00,000. FS not yet approved. Should cars be valued at ₹4,00,000 or ₹3,00,000?</div>
+      <div class="illus-a"><strong>₹3,00,000</strong> — The rules were expected and provide evidence of NRV at reporting date. Post-period events provide evidence about NRV at year-end. Value at lower figure.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Profit-Sharing / Bonus — Key Conditions</div>
+    <div class="imp"><strong>Two conditions BOTH must be satisfied:</strong><br>1. A legal or constructive obligation existed at year-end to make the payment<br>2. The payment is based on profit-sharing or bonus arrangements<br>→ The obligation existed but the exact amount could only be computed after the profit was known.</div>
+  </div>
+</div><!-- /ch4u2s4 -->
+
+<!-- ── S5: Non-Adjusting Events ── -->
+<div class="sec-body" id="ch4u2s5">
+  <div class="ch-title">Accounting Treatment of Non-Adjusting Events</div>
+  <div class="imp"><strong>Rule (Para 10)</strong>An entity shall <strong>NOT adjust</strong> the amounts recognised in its financial statements to reflect non-adjusting events after the reporting period.</div>
+
+  <div class="card">
+    <div class="card-title">Classic Example of Non-Adjusting Event</div>
+    <ul class="note-list">
+      <li><strong>Decline in fair value of investments</strong> between year-end and approval date</li>
+      <li>The decline reflects <em>new</em> circumstances after year-end — it does NOT relate to conditions at year-end</li>
+      <li>Entity does NOT adjust the carrying amount of investments for this decline</li>
+      <li>Entity does NOT even update the amounts disclosed for investments as at year-end</li>
+      <li>However, additional disclosure may be required per Para 21</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Disclosure Required for Material Non-Adjusting Events (Para 21)</div>
+    <div class="warn"><strong>Mandatory Disclosure if Material</strong>If a non-adjusting event is material and non-disclosure could influence user decisions, disclose:<br>(a) The <strong>nature</strong> of the event<br>(b) An <strong>estimate of financial effect</strong>, or a statement that such an estimate cannot be made</div>
+
+    <div class="card-title" style="margin-top:14px">10 Examples of Non-Adjusting Events That Usually Require Disclosure</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Event</th></tr>
+      <tr><td>(a)</td><td>Major business combination or disposing of major subsidiary</td></tr>
+      <tr><td>(b)</td><td>Announcing a plan to discontinue an operation</td></tr>
+      <tr><td>(c)</td><td>Major asset purchases, assets classified as held-for-sale, or government expropriation</td></tr>
+      <tr><td>(d)</td><td>Destruction of major production plant by fire post period-end</td></tr>
+      <tr><td>(e)</td><td>Announcing or commencing implementation of major restructuring (per Ind AS 37)</td></tr>
+      <tr><td>(f)</td><td>Major ordinary share transactions post period (Ind AS 33)</td></tr>
+      <tr><td>(g)</td><td>Abnormally large changes in asset prices or foreign exchange rates</td></tr>
+      <tr><td>(h)</td><td>Changes in tax rates or tax laws enacted after period-end</td></tr>
+      <tr><td>(i)</td><td>Entering into significant commitments or contingent liabilities (e.g., significant guarantees)</td></tr>
+      <tr><td>(j)</td><td>Commencing major litigation arising solely from post-period events</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Illustration 9 — Fire in Plant</div>
+    <div class="illus-box">
+      <h4>Facts</h4>
+      <div class="illus-q">PQR Ltd's plant was destroyed by fire on 10 May 20X1. Loss estimated ₹40,00,000; insurance recovery expected ₹27,00,000. FS for year ended 31 March 20X1 approved on 12 June 20X1. How to disclose?</div>
+      <div class="illus-a"><strong>Non-adjusting event</strong> (fire occurred after year-end). Disclosure required: nature of event + estimated financial effect (net loss ₹13,00,000 after expected recovery). Also consider whether going concern is still appropriate given only one plant was operational.</div>
+    </div>
+  </div>
+</div><!-- /ch4u2s5 -->
+
+<!-- ── S6: Special Cases ── -->
+<div class="sec-body" id="ch4u2s6">
+  <div class="ch-title">Special Cases — Long-term Loans &amp; Going Concern</div>
+
+  <div class="card">
+    <div class="card-title">2.8.1 Long-term Loan Arrangements — Ind AS 10 Carve-Out</div>
+    <div class="imp"><strong>India-specific Rule (Carve-Out from IAS 10)</strong>Where:<br>• A <strong>material provision</strong> of a long-term loan is <strong>breached on or before year-end</strong><br>• Making the liability payable on demand on the reporting date<br>• AND the lender, <strong>before approval of FS</strong>, agrees to NOT demand payment<br><br>→ This lender's agreement is treated as an <strong>Adjusting Event</strong> under Ind AS 10 (unlike IAS 10 where it would be non-adjusting).</div>
+    <div class="illus-box">
+      <h4>Example 7 — Debentures</h4>
+      <div class="illus-q">ABC Ltd. issued debentures with condition: debt-equity ratio must not exceed 2:1. On 31 March 20X6, ratio exceeds 2:1, making debentures payable on demand (becomes current liability). ABC Ltd. enters agreement with PQR Ltd. on 15 April 20X6 (before FS approved on 30 April 20X6) that PQR will not demand payment immediately. How to classify?</div>
+      <div class="illus-a">The lender's agreement (15 April 20X6) is an <strong>adjusting event</strong> under Ind AS 10 carve-out. Therefore, debentures remain classified as <strong>non-current liability</strong> at 31 March 20X6 — the re-classification to current liability is reversed.</div>
+    </div>
+    <div class="warn"><strong>vs IAS 10</strong>Under IAS 10 (international standard), such a post-period lender agreement is NOT an adjusting event — the liability would remain classified as current. This is a key India-specific difference.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2.8.2 Going Concern</div>
+    <ul class="note-list">
+      <li>Entity shall <strong>NOT prepare FS on going concern basis</strong> if management determines after the reporting period that it intends to liquidate or cease trading</li>
+      <li>Deterioration in results/financial position post period may indicate going concern is no longer appropriate</li>
+      <li>If going concern is abandoned, the effect is so <strong>pervasive</strong> that a <span class="kt">fundamental change in basis of accounting</span> is required — not merely adjustments to amounts</li>
+    </ul>
+    <div class="imp"><strong>Ind AS 1 Disclosures Required (Para 16)</strong>If FS not on going concern → disclose that fact + basis used + reason why entity is not a going concern<br>If material uncertainties exist → disclose conditions/events casting significant doubt on going concern ability</div>
+    <div class="illus-box">
+      <h4>Example 8 — Impact of Abandoning Going Concern</h4>
+      <div class="illus-q">What changes when a company decides to go into liquidation?</div>
+      <div class="illus-a">Raw material &amp; WIP inventory (previously valued as if production would continue) would be valued at best available market/scrap price. Long-term liabilities would become short-term (all must be paid before closure). The <em>entire basis</em> of accounting changes — not just specific amounts.</div>
+    </div>
+    <div class="illus-box">
+      <h4>Illustration 8 — Directory Publisher</h4>
+      <div class="illus-q">XYZ Ltd. was formed to publish directories. Its only contract (Pune circle, 5 years) expires 31 December 20X5. It fails to win any new tenders, confirmed on 23 April 20X5 (after year-end, before FS approval on 10 July 20X5). Appropriate to prepare FS on going concern?</div>
+      <div class="illus-a">Since operations will likely cease by 31 Dec 20X5 and no new contracts secured, entity must judge if there is a realistic possibility to continue. If no realistic alternative exists, <strong>going concern basis may not be appropriate</strong> for FY 20X4-20X5 and thereafter.</div>
+    </div>
+  </div>
+</div><!-- /ch4u2s6 -->
+
+<!-- ── S7: Dividends ── -->
+<div class="sec-body" id="ch4u2s7">
+  <div class="ch-title">Dividends Declared After the Reporting Period</div>
+  <div class="imp"><strong>Rule (Para 12)</strong>If an entity declares dividends to holders of <strong>equity instruments after the reporting period</strong>, the entity shall <strong>NOT recognise those dividends as a liability</strong> at the end of the reporting period.</div>
+
+  <div class="card">
+    <div class="card-title">Why Dividends Are NOT Recognised as Liabilities</div>
+    <ul class="note-list">
+      <li>No obligation exists at the year-end because the dividend has not yet been declared</li>
+      <li>Dividend declared after year-end = <span class="nt">Non-adjusting event</span> (new condition arising after year-end)</li>
+      <li>Such dividends are <strong>disclosed in notes to accounts</strong> in the FS (per Ind AS 1)</li>
+    </ul>
+    <div class="exam"><strong>Key Test</strong>Does an obligation to pay dividends EXIST at year-end? If dividend not yet declared at year-end → NO obligation → NOT a liability → Do NOT recognise.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Redeemable Preference Share Dividends — Different Treatment</div>
+    <ul class="note-list">
+      <li>Ind AS 10 Para 12 applies only to <strong>equity instruments</strong> (as defined in Ind AS 32)</li>
+      <li>Redeemable preference shares = <strong>financial liabilities</strong> under Ind AS 32</li>
+      <li>Dividends on such shares are recognised as <span class="kt">interest expense</span> on a time basis</li>
+      <li>Therefore, Ind AS 10 provisions on dividend declaration date are <strong>NOT relevant</strong> for redeemable preference shares</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Illustration 10 — Dividend after Period-end</div>
+    <div class="illus-box">
+      <h4>Facts</h4>
+      <div class="illus-q">ABC Ltd. declares dividend on 15 July 20X2 for FY 20X1-20X2. FS approved on 20 July 20X2 for year ended 31 March 20X2. In which year should the dividend be accounted for?</div>
+      <div class="illus-a"><strong>FY 20X2-20X3</strong> — The obligation arose when dividend was declared (15 July 20X2), which is in FY 20X2-20X3. At 31 March 20X2, no obligation existed. However, it will be <strong>disclosed in notes</strong> in the FY 20X1-20X2 FS per Ind AS 1.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Summary — Dividends Quick Reference</div>
+    <table class="tbl">
+      <tr><th>Situation</th><th>Treatment</th><th>Reason</th></tr>
+      <tr><td>Dividend declared BEFORE year-end</td><td>Recognise as liability at year-end</td><td>Obligation exists at year-end</td></tr>
+      <tr><td>Dividend declared AFTER year-end (before FS approval)</td><td>Do NOT recognise; disclose in notes</td><td>No obligation at year-end</td></tr>
+      <tr><td>Dividend on equity shares</td><td>Ind AS 10 Para 12 applies</td><td>Equity instrument per Ind AS 32</td></tr>
+      <tr><td>Dividend on redeemable preference shares</td><td>Ind AS 10 Para 12 does NOT apply; recognised as interest expense</td><td>Financial liability per Ind AS 32</td></tr>
+    </table>
+  </div>
+</div><!-- /ch4u2s7 -->
+
+<!-- ── S8: Disclosures ── -->
+<div class="sec-body" id="ch4u2s8">
+  <div class="ch-title">Disclosure Requirements — Ind AS 10</div>
+
+  <div class="card">
+    <div class="card-title">2.10.1 Date of Approval for Issue (Para 17)</div>
+    <ul class="note-list">
+      <li>Entity <strong>shall disclose</strong> the date when FS were approved for issue <strong>and who gave that approval</strong></li>
+      <li>If the entity's owners or others have the power to amend the FS after issue → disclose that fact</li>
+      <li>Users need this date to know the scope of post-period events covered</li>
+    </ul>
+    <div class="exam"><strong>Why This Matters</strong>The date of approval tells stakeholders: "Events after this date are NOT reflected in these financial statements." It defines the temporal scope of the FS.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2.10.2 Updating Disclosure — Adjusting Events</div>
+    <ul class="note-list">
+      <li>When adjusting events occur, entity adjusts the FS amounts — but must ALSO update its <strong>disclosures</strong> to explain the adjustments</li>
+      <li>Even if new information does not affect amounts, the entity may need to update disclosures</li>
+      <li>Example: New evidence post-period about a contingent liability that existed at year-end → update contingent liability disclosures per Ind AS 37</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2.10.3 Disclosure of Material Non-Adjusting Events (Para 21)</div>
+    <div class="warn"><strong>Mandatory if Material</strong>For each material category of non-adjusting event:<br>(a) Nature of the event<br>(b) Estimate of financial effect, or statement that estimate cannot be made</div>
+    <div class="imp"><strong>Key Point</strong>Non-disclosure of a material non-adjusting event could influence users' economic decisions. Hence, even though no adjustment is made, disclosure is mandatory.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Summary Table of Key Disclosures</div>
+    <table class="tbl">
+      <tr><th>Item</th><th>Timing</th><th>Treatment</th><th>Reason</th></tr>
+      <tr><td>Dividends (equity)</td><td>Declared after year-end but before FS approval</td><td>Do NOT recognise; disclose in notes</td><td>No obligation at year-end</td></tr>
+      <tr><td>Going concern</td><td>Post-period decision to liquidate/cease</td><td>Do NOT prepare on going concern basis; mandatory disclosures</td><td>Pervasive effect on all amounts</td></tr>
+      <tr><td>Date of approval</td><td>Approved after year-end</td><td>Disclose date and approving authority</td><td>Stakeholders need to know cut-off</td></tr>
+      <tr><td>Updating conditions disclosure</td><td>New info post-period about year-end conditions</td><td>Update relevant disclosures</td><td>Even if amounts not affected</td></tr>
+    </table>
+  </div>
+</div><!-- /ch4u2s8 -->
+
+<!-- ── S9: Non-Cash Distribution ── -->
+<div class="sec-body" id="ch4u2s9">
+  <div class="ch-title">Distribution of Non-Cash Assets to Owners — Appendix A to Ind AS 10</div>
+
+  <div class="card">
+    <div class="card-title">Background</div>
+    <ul class="note-list">
+      <li>Sometimes an entity distributes <strong>non-cash assets</strong> (e.g., PPE, equity in another entity) as dividends to equity shareholders</li>
+      <li>Ind AS 1 (Para 107) requires dividend amounts to be presented in statement of changes in equity or notes — but does not prescribe <strong>how to measure</strong> them</li>
+      <li>Appendix A to Ind AS 10 fills this gap</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Applicability of Appendix A</div>
+    <ul class="note-list">
+      <li>Applies to <strong>non-reciprocal distributions</strong> of assets by entity to owners acting as owners</li>
+      <li>Types: (a) Distributions of non-cash assets (PPE, businesses, ownership interests, disposal groups), (b) Distributions offering choice of non-cash or cash alternative</li>
+      <li>Applies only when <strong>all owners of same class</strong> are treated equally</li>
+    </ul>
+    <div class="warn"><strong>Exclusions (Non-applicability)</strong>• Distributions where same party controls asset before AND after distribution (e.g., intra-group)<br>• Distributions where entity retains control of subsidiary<br>• Does NOT address accounting by shareholders who receive the distribution</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Three Issues Addressed by Appendix A</div>
+    <div class="grid3">
+      <div class="phase-box" style="border-color:#bfdbfe">
+        <h4 style="color:#1e3a5f">When?</h4>
+        <div style="font-size:13px;color:#334155">When to recognise dividend payable</div>
+      </div>
+      <div class="phase-box" style="border-color:#bbf7d0">
+        <h4 style="color:#065f46">How Much?</h4>
+        <div style="font-size:13px;color:#334155">How to measure dividend payable</div>
+      </div>
+      <div class="phase-box" style="border-color:#fecaca">
+        <h4 style="color:#7f1d1d">Settlement?</h4>
+        <div style="font-size:13px;color:#334155">Accounting for difference at settlement</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Recognition — When to Recognise Dividend Payable</div>
+    <div class="imp"><strong>Rule</strong>Liability to pay dividend shall be recognised when the dividend is <strong>appropriately authorised and is no longer at the discretion of the entity</strong>.<br><br>This date is:<br>(a) When declaration approved by relevant authority (e.g., shareholders), if jurisdiction requires such approval<br>(b) When dividend is declared (by management/board), if jurisdiction does NOT require further approval</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Measurement — How to Measure Dividend Payable</div>
+    <ul class="note-list">
+      <li>Measure liability at <span class="kt">fair value</span> of the non-cash assets to be distributed</li>
+      <li>If owners have a choice (non-cash or cash): estimate dividend payable by considering <strong>fair value of each alternative</strong> AND <strong>probability of owners selecting each</strong></li>
+      <li>At each reporting period-end and at date of settlement → <strong>review and adjust carrying amount</strong> of dividend payable; changes recognised in <strong>equity</strong></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Settlement — Accounting for Difference</div>
+    <ul class="note-list">
+      <li>When dividend is settled, recognise the <strong>difference between:</strong></li>
+      <li style="padding-left:24px">(a) Carrying amount of assets distributed, and</li>
+      <li style="padding-left:24px">(b) Carrying amount of the dividend payable</li>
+      <li>This difference is recognised in <span class="kt">Profit or Loss</span> as a separate line item</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Disclosures — Non-Cash Distribution</div>
+    <ul class="note-list">
+      <li>Carrying amount of dividend payable at beginning and end of period</li>
+      <li>Increase/decrease in carrying amount due to change in fair value of assets to be distributed</li>
+      <li>If dividend declared post period-end before FS approval: (a) nature of asset, (b) carrying amount at year-end, (c) fair value at year-end (if different from carrying amount)</li>
+    </ul>
+  </div>
+</div><!-- /ch4u2s9 -->
+
+<!-- ── S10: Ind AS 10 vs AS 4 ── -->
+<div class="sec-body" id="ch4u2s10">
+  <div class="ch-title">Ind AS 10 vs AS 4 — Key Differences &amp; Carve-Out</div>
+
+  <div class="card">
+    <div class="card-title">Comparative Table</div>
+    <table class="tbl">
+      <tr><th>#</th><th>Aspect</th><th>Ind AS 10</th><th>AS 4</th></tr>
+      <tr>
+        <td>Title</td>
+        <td>—</td>
+        <td><span class="kt">Events after the Reporting Period</span></td>
+        <td><span class="nt">Contingencies and Events Occurring After the Balance Sheet Date</span></td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Material non-adjusting events</td>
+        <td>Must be disclosed <strong>in the financial statements</strong></td>
+        <td>Disclosed in the <strong>report of the approving authority</strong></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Going concern</td>
+        <td>Requires <strong>fundamental change in basis of accounting</strong> if going concern is no longer appropriate</td>
+        <td>Requires <strong>adjustments to assets and liabilities</strong> when going concern is not appropriate</td>
+      </tr>
+      <tr>
+        <td>2 (contd.)</td>
+        <td>Going concern disclosures</td>
+        <td>Via Ind AS 1: disclose fact, basis used, reason; also disclose uncertainties casting doubt</td>
+        <td>No detailed disclosure requirement (though AS 1 requires basic disclosure)</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Breach of long-term loan (Carve-Out)</td>
+        <td>Lender's post-period agreement to waive breach = <strong>Adjusting Event</strong></td>
+        <td>No specific guidance</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Distribution of non-cash assets</td>
+        <td>Appendix A prescribes: recognition trigger, fair value measurement, settlement accounting</td>
+        <td>No guidance</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">The Ind AS 10 Carve-Out Explained</div>
+    <div class="warn"><strong>India-specific Difference from IAS 10</strong>Under <span class="kt">Ind AS 10</span>: If a long-term loan covenant is breached by year-end (making it payable on demand), and the lender waives the breach before FS approval → treated as ADJUSTING EVENT → liability remains non-current.<br><br>Under <span class="nt">IAS 10</span>: Such a post-period lender agreement is NOT an adjusting event → liability classified as current at year-end (per IAS 1).<br><br>This carve-out was introduced because Ind AS 1 has a corresponding carve-out from IAS 1 on classification of such liabilities.</div>
+  </div>
+</div><!-- /ch4u2s10 -->
+
+<!-- ── S11: Illustrations ── -->
+<div class="sec-body" id="ch4u2s11">
+  <div class="ch-title">Practice Illustrations — ICAI Study Material</div>
+
+  <div class="card">
+    <div class="card-title">Illustration 1 — SEBI Filing vs Board Approval</div>
+    <div class="illus-box">
+      <h4>Facts</h4>
+      <div class="illus-q">AGM held 10 July 20X2. Board meeting 15 May 20X2. Company filed info with SEBI on 20 April 20X2. Management claims 20 April 20X2 is the cut-off. Is management correct?</div>
+      <div class="illus-a"><strong>No.</strong> Even if partial information is already published, "events after the reporting period" extends to the <strong>date of Board approval (15 May 20X2)</strong>. SEBI filing does not shift the cut-off. The period is 31 March 20X2 to 15 May 20X2.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Illustration 4 — GST Court Order</div>
+    <div class="illus-box">
+      <h4>Facts</h4>
+      <div class="illus-q">ABC Ltd. disputed GST. Court order on 15 April 20X2 rejects claim — company must pay additional tax. FS for 20X1-20X2 approved 15 May 20X2. Account in FY 20X1-20X2 or 20X2-20X3?</div>
+      <div class="illus-a"><strong>FY 20X1-20X2.</strong> The court order provides evidence of a liability that existed at year-end (31 March 20X2). It is an adjusting event — amounts must be adjusted in the FY 20X1-20X2 financial statements.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Illustration 5 — Earthquake &amp; Bankruptcy</div>
+    <div class="illus-box">
+      <h4>Facts (Part 1)</h4>
+      <div class="illus-q">Earthquake occurs in February 20X1 (before year-end). XYZ Ltd. made 50% specific provision. In April 20X1 (after year-end, before FS approval), debtor declared bankrupt. Can full provision be made for FY 20X1?</div>
+      <div class="illus-a"><strong>Yes — full provision of ₹2 lakhs.</strong> Earthquake (the condition) existed before year-end. Bankruptcy after year-end provides evidence of the condition at year-end. Adjusting event — adjust to 100% provision in FY 20X1 FS.</div>
+    </div>
+    <div class="illus-box">
+      <h4>Facts (Part 2)</h4>
+      <div class="illus-q">What if earthquake occurred AFTER 31 March 20X1? XYZ Ltd. made only 5% general provision. Debtor goes bankrupt later. Adjusting or non-adjusting?</div>
+      <div class="illus-a"><strong>Non-adjusting event.</strong> Since the earthquake (the condition) arose AFTER year-end, no condition existed at 31 March 20X1. Bankruptcy is a non-adjusting event. If material → disclose nature of event and estimated financial effect in notes.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Test Your Knowledge — Q3: Laptop Inventory</div>
+    <div class="illus-box">
+      <h4>Facts</h4>
+      <div class="illus-q">ABC Ltd. has 50 laptops at ₹45,000 cost each on 31 March 20X2. On 15 April 20X2, advanced version launches; price drops to ₹35,000. FS approved 15 May 20X2. Management doesn't want to write down, saying price reduction occurred after year-end. Correct?</div>
+      <div class="illus-a"><strong>Management is WRONG.</strong> Per Ind AS 10, a decrease in NRV after year-end is normally an adjusting event. The post-period sale prices provide evidence of NRV at year-end. Inventory should be valued at ₹35,000 (NRV) less estimated selling costs — NOT ₹45,000.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Test Your Knowledge — Q4: Rocky Surface in Construction</div>
+    <div class="illus-box">
+      <h4>Facts</h4>
+      <div class="illus-q">XY Ltd. has a ₹200 crore civil construction contract. During execution on 29 May 20X2, rocky surface found; cost escalates by ₹50 crores (irrecoverable). Year-end: 31 March 20X2. FS approved: 15 June 20X2. Adjusting or non-adjusting?</div>
+      <div class="illus-a"><strong>Adjusting event.</strong> The rocky surface physically existed at 31 March 20X2 — it was there all along, just not yet encountered. The condition (rocky surface) existed at year-end. Post-period discovery confirms the pre-existing condition. Adjust cost and profit in FY 20X1-20X2 FS.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Test Your Knowledge — Q5: Arbitration Award</div>
+    <div class="illus-box">
+      <h4>Facts</h4>
+      <div class="illus-q">A Ltd. had a penalty provision + approached arbitrator before year-end. Arbitrator awarded in A Ltd.'s favour in April 20X2 (before FS approval in May 20X2) — provision to be reduced; other party to bear costs. What adjustments are needed?</div>
+      <div class="illus-a"><strong>Adjusting event</strong> — A Ltd. approached arbitrator before year-end; the condition existed at year-end. The award confirms the outcome.<br><br><strong>Provision:</strong> Must be remeasured/reduced in FY 20X1-20X2 FS.<br><br><strong>Recovery of costs:</strong> Right to recover costs was a contingent asset at year-end. Since recovery became virtually certain only when the arbitrator decided (in FY 20X2-20X3), recognise recovery in <strong>FY 20X2-20X3</strong> (per para 35 of Ind AS 37 on contingent assets).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Illustration 7 — Machinery Cost Bills Received Late</div>
+    <div class="illus-box">
+      <h4>Facts</h4>
+      <div class="illus-q">ABC Ltd. installed new machinery on 15 March 20X2. Supplier submitted bills for installation + training on 10 April 20X2 (FS not yet approved). Capitalise in FY 20X1-20X2 or FY 20X2-20X3?</div>
+      <div class="illus-a"><strong>FY 20X1-20X2.</strong> Installation and training are integral to the cost of the asset. Even though details are available after year-end, they provide evidence of the cost that existed at year-end. This is an adjusting event — capitalise in FY 20X1-20X2.</div>
+    </div>
+  </div>
+</div><!-- /ch4u2s11 -->
+
+</div><!-- end ch4u2Wrap -->
+
 <div id="comingSoon" style="display:none" class="coming">
   <div class="coming-icon">📖</div>
   <h3>Chapter notes coming soon</h3>
@@ -3780,6 +4532,10 @@ html,body{height:100%;background:#f4f6fb;font-family:-apple-system,BlinkMacSyste
 </div><!-- end main -->
 </div><!-- end body-row -->
 </div><!-- end app -->
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
 /* ── Sidebar toggle ── */
@@ -3819,6 +4575,15 @@ function showSecCh4U1(n){
   document.getElementById('secNavCh4U1').scrollTo({left:buttonsCh4U1[n].offsetLeft-20,behavior:'smooth'});
 }
 
+/* ── Chapter 4 Unit 2 section nav ── */
+const sectionsCh4U2=document.querySelectorAll('#ch4u2Wrap .sec-body');
+const buttonsCh4U2=document.querySelectorAll('#secNavCh4U2 .sec-btn');
+function showSecCh4U2(n){
+  sectionsCh4U2.forEach((s,i)=>{s.classList.toggle('visible',i===n)});
+  buttonsCh4U2.forEach((b,i)=>{b.classList.toggle('active',i===n)});
+  document.getElementById('secNavCh4U2').scrollTo({left:buttonsCh4U2[n].offsetLeft-20,behavior:'smooth'});
+}
+
 /* ── setUnit4: Chapter 4 unit switching ── */
 function setUnit4(el,unit){
   document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
@@ -3829,6 +4594,7 @@ function setUnit4(el,unit){
   document.getElementById('ch3u2Wrap').style.display='none';
   document.getElementById('ch3u3Wrap').style.display='none';
   document.getElementById('ch4u1Wrap').style.display=unit==='ch4u1'?'block':'none';
+  document.getElementById('ch4u2Wrap').style.display=unit==='ch4u2'?'block':'none';
   document.getElementById('comingSoon').style.display='none';
   var g=document.getElementById('ch4GrpBody');
   var h=document.getElementById('ch4GrpHdr');
@@ -3852,10 +4618,226 @@ function highlightInElement(el,q){
   const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
   nodes.forEach(node=>{
     if(!node.textContent.toLowerCase().includes(q.toLowerCase()))return;
+    if(node.parentNode&&node.parentNode.classList&&node.parentNode.classList.contains('annot-hl'))return;
     const span=document.createElement('span');
-    span.innerHTML=node.textContent.replace(re,'<mark class="search-hl" style="background:#fde68a;color:#92400e;border-radius:3px;padding:0 2px">$1</mark>');
+    span.innerHTML=node.textContent.replace(re,'<mark class="search-hl">$1</mark>');
     node.parentNode.replaceChild(span,node);
   });
+}
+
+/* ── Live highlight (as you type) ── */
+function liveHighlight(q){
+  clearHighlights();
+  if(!q||q.length<2)return;
+  const visibleSec=document.querySelector('.sec-body.visible');
+  if(visibleSec)highlightInElement(visibleSec,q);
+}
+
+/* ══════════════════════════════════════════
+   ANNOTATION SYSTEM — Firebase Real-time
+   ══════════════════════════════════════════ */
+
+/* ── Config — change TEACHER_PASSWORD to whatever you want ── */
+var TEACHER_PASSWORD = 'teach@2024';
+
+/* ── State ── */
+var isTeacher = false;
+var annotColor = '#fde68a';
+var annotTextColor = '#92400e';
+var fbAnnotRef = null;
+var currentAnnotations = {}; /* id → annotation object */
+
+/* ── Firebase init ── */
+var firebaseConfig = {
+  apiKey: "AIzaSyDQ2MCIa_EBSbE5bLZvkmQUu4bTHyeIgW8",
+  authDomain: "ca-final-fr.firebaseapp.com",
+  databaseURL: "https://ca-final-fr-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "ca-final-fr",
+  storageBucket: "ca-final-fr.firebasestorage.app",
+  messagingSenderId: "304907563015",
+  appId: "1:304907563015:web:9bf0b0d02f91617e78faa2"
+};
+firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
+fbAnnotRef = db.ref('annotations');
+
+/* ── Sync status helpers ── */
+function setSyncStatus(msg, ok){
+  ['abSyncDot','abSyncDotT'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){ el.textContent=msg; el.style.color=ok?'#86efac':'rgba(255,255,255,0.45)'; }
+  });
+}
+
+/* ── Teacher login/logout ── */
+function showTeacherLogin(){
+  document.getElementById('teacherModal').style.display='flex';
+  setTimeout(function(){ document.getElementById('teacherPwInput').focus(); },100);
+}
+function closeTeacherModal(){
+  document.getElementById('teacherModal').style.display='none';
+  document.getElementById('teacherPwInput').value='';
+  document.getElementById('teacherPwErr').style.display='none';
+}
+function submitTeacherLogin(){
+  var pw=document.getElementById('teacherPwInput').value;
+  if(pw===TEACHER_PASSWORD){
+    isTeacher=true;
+    closeTeacherModal();
+    document.getElementById('abStudentView').style.display='none';
+    document.getElementById('abTeacherView').style.display='flex';
+  } else {
+    document.getElementById('teacherPwErr').style.display='block';
+    document.getElementById('teacherPwInput').value='';
+    document.getElementById('teacherPwInput').focus();
+  }
+}
+function teacherLogout(){
+  isTeacher=false;
+  document.getElementById('abTeacherView').style.display='none';
+  document.getElementById('abStudentView').style.display='flex';
+}
+
+/* ── Colour picker ── */
+function setAnnotColor(el,bg,txt){
+  document.querySelectorAll('#abTeacherView .ab-color').forEach(function(c){ c.classList.remove('ab-active'); });
+  el.classList.add('ab-active');
+  annotColor=bg; annotTextColor=txt;
+}
+
+/* ── DOM: clear all rendered marks ── */
+function clearRenderedMarks(){
+  document.querySelectorAll('.annot-hl').forEach(function(el){
+    var p=el.parentNode;
+    while(el.firstChild) p.insertBefore(el.firstChild,el);
+    p.removeChild(el);
+    p.normalize();
+  });
+}
+
+/* ── Apply one annotation to the DOM ── */
+function applyAnnotation(ann){
+  if(!ann||!ann.text||!ann.secId) return;
+  var sec=document.getElementById(ann.secId);
+  if(!sec) return;
+  var text=ann.text;
+  var targetOcc=ann.occurrence||0;
+  var occ=0;
+  var walker=document.createTreeWalker(sec,NodeFilter.SHOW_TEXT,{
+    acceptNode:function(node){
+      if(node.parentNode.closest('.annot-hl')) return NodeFilter.FILTER_REJECT;
+      if(node.parentNode.closest('.search-hl')) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  },false);
+  var node;
+  while((node=walker.nextNode())){
+    var idx=node.textContent.indexOf(text);
+    if(idx>=0){
+      if(occ===targetOcc){
+        try{
+          var range=document.createRange();
+          range.setStart(node,idx);
+          range.setEnd(node,idx+text.length);
+          var mark=document.createElement('mark');
+          mark.className='annot-hl';
+          mark.dataset.annotId=ann.id;
+          mark.style.background=ann.bg;
+          mark.style.color=ann.fg;
+          mark.title='Teacher highlight';
+          mark.style.cursor='default';
+          range.surroundContents(mark);
+          return;
+        }catch(e){}
+      }
+      occ++;
+    }
+  }
+}
+
+/* ── Re-render all annotations from currentAnnotations ── */
+function renderAllAnnotations(){
+  clearRenderedMarks();
+  Object.values(currentAnnotations).forEach(function(ann){ applyAnnotation(ann); });
+}
+
+/* ── Firebase: listen for changes (real-time for all users) ── */
+fbAnnotRef.on('value', function(snapshot){
+  currentAnnotations = snapshot.val() || {};
+  renderAllAnnotations();
+  setSyncStatus('🟢 Live', true);
+}, function(err){
+  setSyncStatus('🔴 Offline', false);
+});
+
+/* ── Firebase connection state ── */
+db.ref('.info/connected').on('value', function(snap){
+  if(snap.val()) setSyncStatus('🟢 Live', true);
+  else setSyncStatus('🔴 Offline', false);
+});
+
+/* ── Get occurrence index of element within section ── */
+function getOccurrence(text, secId){
+  var sec=document.getElementById(secId);
+  if(!sec) return 0;
+  var walker=document.createTreeWalker(sec,NodeFilter.SHOW_TEXT,{
+    acceptNode:function(node){
+      if(node.parentNode.closest('.annot-hl')) return NodeFilter.FILTER_REJECT;
+      if(node.parentNode.closest('.search-hl')) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  },false);
+  var occ=0; var node;
+  while((node=walker.nextNode())){
+    if(node.textContent.indexOf(text)>=0){
+      return occ; /* first match */
+    }
+  }
+  return 0;
+}
+
+/* ── Mouse-up: teacher highlights selected text ── */
+document.addEventListener('mouseup',function(e){
+  if(!isTeacher) return;
+  if(e.target.closest('#annotBar')||e.target.closest('#teacherModal')) return;
+  var sel=window.getSelection();
+  if(!sel||sel.isCollapsed||!sel.toString().trim()) return;
+  var range=sel.getRangeAt(0);
+  var container=range.commonAncestorContainer;
+  if(container.nodeType===3) container=container.parentNode;
+  if(!container.closest('#mainArea')){ sel.removeAllRanges(); return; }
+  if(container.closest('.search-hl')){ sel.removeAllRanges(); return; }
+  var selectedText=sel.toString().trim();
+  var sec=container.closest('.sec-body');
+  if(!sec){ sel.removeAllRanges(); return; }
+  sel.removeAllRanges();
+  /* Save to Firebase */
+  var newRef=fbAnnotRef.push();
+  newRef.set({
+    id: newRef.key,
+    text: selectedText,
+    bg: annotColor,
+    fg: annotTextColor,
+    secId: sec.id,
+    occurrence: getOccurrence(selectedText, sec.id),
+    ts: Date.now()
+  });
+});
+
+/* ── Click on highlight to remove (teacher only) ── */
+document.addEventListener('click',function(e){
+  if(!isTeacher) return;
+  var mark=e.target.closest('.annot-hl');
+  if(!mark) return;
+  var annotId=mark.dataset.annotId;
+  if(annotId) fbAnnotRef.child(annotId).remove();
+});
+
+/* ── Clear all annotations (teacher) ── */
+function clearAllAnnotations(){
+  if(!isTeacher) return;
+  if(!confirm('Remove ALL teacher highlights? This cannot be undone.')) return;
+  fbAnnotRef.remove();
 }
 
 
@@ -3896,6 +4878,7 @@ function setChapter(el,n){
   document.getElementById('ch3u2Wrap').style.display='none';
   document.getElementById('ch3u3Wrap').style.display='none';
   document.getElementById('ch4u1Wrap').style.display='none';
+  document.getElementById('ch4u2Wrap').style.display='none';
   document.getElementById('comingSoon').style.display='none';
 }
 
@@ -3909,6 +4892,7 @@ function setUnit(el,unit){
   document.getElementById('ch3u2Wrap').style.display=unit==='u2'?'block':'none';
   document.getElementById('ch3u3Wrap').style.display=unit==='u3'?'block':'none';
   document.getElementById('ch4u1Wrap').style.display='none';
+  document.getElementById('ch4u2Wrap').style.display='none';
   document.getElementById('comingSoon').style.display='none';
   // Keep Ch3 group open
   var g=document.getElementById('ch3GrpBody');
@@ -3918,7 +4902,7 @@ function setUnit(el,unit){
 
 /* ── Search — searches ALL content across all chapters/units ── */
 function doSearch(q,e){
-  if(e&&e.key!=='Enter')return;
+  if(e&&e.type==='keydown'&&e.key!=='Enter')return;
   clearHighlights();
   if(!q||q.length<2)return;
   const lq=q.toLowerCase();
@@ -3931,6 +4915,7 @@ function doSearch(q,e){
       document.getElementById('ch3u2Wrap').style.display='none';
       document.getElementById('ch3u3Wrap').style.display='none';
       document.getElementById('ch4u1Wrap').style.display='none';
+      document.getElementById('ch4u2Wrap').style.display='none';
       document.getElementById('comingSoon').style.display='none';
       document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active'));
       if(all[i].closest('#ch1Wrap')){
@@ -3969,6 +4954,14 @@ function doSearch(q,e){
         if(!g4.classList.contains('sub-open')){g4.classList.add('sub-open');h4.classList.add('grp-open');}
         const idx=Array.from(sectionsCh4U1).indexOf(all[i]);
         if(idx>=0)showSecCh4U1(idx);
+      } else if(all[i].closest('#ch4u2Wrap')){
+        document.getElementById('ch4u2Wrap').style.display='block';
+        document.getElementById('ch4u2Btn').classList.add('active');
+        var g4b=document.getElementById('ch4GrpBody');
+        var h4b=document.getElementById('ch4GrpHdr');
+        if(!g4b.classList.contains('sub-open')){g4b.classList.add('sub-open');h4b.classList.add('grp-open');}
+        const idx=Array.from(sectionsCh4U2).indexOf(all[i]);
+        if(idx>=0)showSecCh4U2(idx);
       }
       /* Highlight matches in the visible section */
       setTimeout(()=>{ highlightInElement(all[i],q); },50);
@@ -3984,6 +4977,7 @@ document.getElementById('ch2Wrap').style.display='none';
 document.getElementById('ch3Wrap').style.display='none';
 document.getElementById('ch3u2Wrap').style.display='none';
 document.getElementById('ch3u3Wrap').style.display='block';
+document.getElementById('ch4u2Wrap').style.display='none';
 document.getElementById('ch3u3Btn').classList.add('active');
 document.getElementById('ch3u2Btn').classList.remove('active');
 </script>
