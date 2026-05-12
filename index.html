@@ -150,13 +150,10 @@ html,body{height:100%;background:#f4f6fb;font-family:-apple-system,BlinkMacSyste
 .ab-swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform 0.15s,border-color 0.15s;flex-shrink:0}
 .ab-swatch:hover,.ab-swatch.ab-active{transform:scale(1.25);border-color:#fff}
 .ab-clear{background:rgba(239,68,68,0.25);color:#fca5a5;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background 0.15s}
-.reading-panel{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:10px;padding:5px 12px;flex-shrink:0}
-.rd-group{display:flex;align-items:center;gap:6px}
-.rd-lbl{font-size:10px;color:rgba(255,255,255,0.55);font-weight:500;white-space:nowrap;letter-spacing:0.04em}
-.rd-slider{-webkit-appearance:none;appearance:none;width:72px;height:3px;border-radius:2px;outline:none;background:rgba(255,255,255,0.25);cursor:pointer}
-.rd-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:12px;height:12px;border-radius:50%;background:#93c5fd;cursor:pointer}
-.rd-slider::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:#93c5fd;cursor:pointer;border:none}
-.rd-val{font-size:10px;color:rgba(255,255,255,0.6);width:24px;text-align:right}
+.reading-panel{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.rd-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.22);border-radius:8px;color:#fff;font-size:12px;font-weight:500;padding:5px 11px;cursor:pointer;white-space:nowrap;transition:background 0.15s,transform 0.1s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.rd-btn:hover{background:rgba(255,255,255,0.22)}
+.rd-btn:active{transform:scale(0.95);background:rgba(255,255,255,0.3)}
 .ab-clear:hover{background:rgba(239,68,68,0.45)}
 /* Laser pointer dot */
 #laserDot{position:fixed;pointer-events:none;z-index:9500;display:none}
@@ -352,17 +349,9 @@ body.dark .dash-chapter-hdr{color:#64748b;border-bottom-color:#334155}
     </select>
   </div>
 
-  <div class="reading-panel" title="Reading settings">
-    <div class="rd-group">
-      <span class="rd-lbl">🔍 ZOOM</span>
-      <input type="range" class="rd-slider" id="zoomSlider" min="80" max="130" value="100" oninput="applyZoom(this.value)">
-      <span class="rd-val" id="zoomVal">100%</span>
-    </div>
-    <div class="rd-group">
-      <span class="rd-lbl">𝗕 WEIGHT</span>
-      <input type="range" class="rd-slider" id="weightSlider" min="300" max="700" step="100" value="400" oninput="applyWeight(this.value)">
-      <span class="rd-val" id="weightVal">Reg</span>
-    </div>
+  <div class="reading-panel">
+    <button class="rd-btn" id="zoomBtn" onclick="cycleZoom()" title="Tap to cycle zoom: 100 → 125 → 150%">🔍 100%</button>
+    <button class="rd-btn" id="weightBtn" onclick="cycleWeight()" title="Tap to cycle weight: Regular → Semi-Bold → Bold">A Reg</button>
   </div>
   <button id="dashBtn" onclick="showDashboard()" title="Progress Dashboard" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;font-size:13px;padding:5px 12px;cursor:pointer;flex-shrink:0;transition:background 0.15s">📊 Dashboard</button>
   <button id="darkBtn" onclick="toggleDark()" title="Toggle dark mode" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;font-size:20px;padding:4px 10px;cursor:pointer;flex-shrink:0;transition:background 0.15s" aria-label="Toggle dark mode">🌙</button>
@@ -7519,29 +7508,72 @@ function launchConfetti(){
   requestAnimationFrame(draw);
 }
 
-/* ── Zoom & Weight controls ── */
-var _weightLabels={300:'Thin',400:'Reg',500:'Med',600:'Semi',700:'Bold'};
-function applyZoom(v){
-  document.body.style.zoom=v+'%';
-  var el=document.getElementById('zoomVal');
-  if(el)el.textContent=v+'%';
-  try{localStorage.setItem('rd_zoom',v);}catch(e){}
+/* ── Zoom & Weight toggles (iPad/Safari-safe — uses style injection, not CSS zoom) ── */
+var _zoomLevels=[100,125,150],_zoomIdx=0;
+var _weightLevels=[400,600,700],_weightLabels={400:'Reg',600:'Semi',700:'Bold'},_weightIdx=0;
+
+function cycleZoom(){_zoomIdx=(_zoomIdx+1)%_zoomLevels.length;applyZoom(_zoomLevels[_zoomIdx]);}
+
+function applyZoom(pct){
+  pct=parseInt(pct)||100;
+  _zoomIdx=_zoomLevels.indexOf(pct); if(_zoomIdx<0)_zoomIdx=0;
+  var f=pct/100;
+  var s=document.getElementById('zoomStyle');
+  if(!s){s=document.createElement('style');s.id='zoomStyle';document.head.appendChild(s);}
+  if(pct===100){
+    s.textContent='';
+  } else {
+    /* Scale all key reading elements by multiplying their base px sizes.
+       This approach works universally — Chrome, Safari, iPad — no CSS zoom needed. */
+    s.textContent=
+      '.sec-body{font-size:'+Math.round(15*f)+'px !important}'+
+      '.sec-body .note-list li{font-size:'+Math.round(14*f)+'px !important}'+
+      '.sec-body .card-title{font-size:'+Math.round(13*f)+'px !important}'+
+      '.sec-body .tbl,.sec-body .tbl th,.sec-body .tbl td{font-size:'+Math.round(13*f)+'px !important}'+
+      '.sec-body .imp,.sec-body .warn,.sec-body .exam{font-size:'+Math.round(13*f)+'px !important}'+
+      '.sec-body .def-text,.sec-body .def-term{font-size:'+Math.round(13*f)+'px !important}'+
+      '.sec-body .mc-val{font-size:'+Math.round(13*f)+'px !important}'+
+      '.sec-body .illus-q,.sec-body .illus-a{font-size:'+Math.round(13*f)+'px !important}'+
+      '.sec-body .ch-title{font-size:'+Math.round(20*f)+'px !important}'+
+      '.sec-body .ch-subtitle{font-size:'+Math.round(13*f)+'px !important}'+
+      '.pq-qtext{font-size:'+Math.round(14*f)+'px !important}'+
+      '.pq-qtext table,.pq-qtext table td,.pq-qtext table th{font-size:'+Math.round(13*f)+'px !important}'+
+      '.pq-answer table td,.pq-answer table th{font-size:'+Math.round(12.5*f)+'px !important}'+
+      '.mcq-case-para,.mcq-q,.mcq-opt{font-size:'+Math.round(13*f)+'px !important}';
+  }
+  var btn=document.getElementById('zoomBtn');
+  if(btn)btn.textContent='🔍 '+pct+'%';
+  try{localStorage.setItem('rd_zoom',pct);}catch(e){}
 }
-function applyWeight(v){
-  var r=document.documentElement.style;
-  r.setProperty('--rd-fw',v);
-  document.querySelectorAll('.sec-body,.pq-question-block,.card-body,.note-list,.mc-val,.def-text,.illus-q,.illus-a,.imp,.warn,.exam')
-    .forEach(function(el){el.style.fontWeight=v;});
-  var el=document.getElementById('weightVal');
-  if(el)el.textContent=_weightLabels[v]||v;
-  try{localStorage.setItem('rd_weight',v);}catch(e){}
+
+function cycleWeight(){_weightIdx=(_weightIdx+1)%_weightLevels.length;applyWeight(_weightLevels[_weightIdx]);}
+
+function applyWeight(w){
+  w=parseInt(w)||400;
+  _weightIdx=_weightLevels.indexOf(w); if(_weightIdx<0)_weightIdx=0;
+  var s=document.getElementById('weightStyle');
+  if(!s){s=document.createElement('style');s.id='weightStyle';document.head.appendChild(s);}
+  if(w===400){
+    s.textContent='';
+  } else {
+    /* Already-bold elements (card-title, strong, badges, ch-title) get w+200 so they stay visually heavier */
+    var xw=Math.min(900,w+200);
+    s.textContent=
+      '.sec-body,.pq-question-block,.note-list,.mc-val,.def-text,.illus-q,.illus-a,.imp,.warn,.exam{font-weight:'+w+' !important}'+
+      '.sec-body strong,.sec-body b,.sec-body .card-title,.sec-body .def-term,.ch-title,'+
+      '.sec-body .kt,.sec-body .nt,.sec-body .gt,.sec-body .yt,.pq-qnum{font-weight:'+xw+' !important}';
+  }
+  var btn=document.getElementById('weightBtn');
+  if(btn)btn.textContent='A\u00a0'+_weightLabels[w];
+  try{localStorage.setItem('rd_weight',w);}catch(e){}
 }
+
 (function initReading(){
   try{
-    var z=localStorage.getItem('rd_zoom');
-    if(z){document.body.style.zoom=z+'%';var sl=document.getElementById('zoomSlider');if(sl){sl.value=z;var vl=document.getElementById('zoomVal');if(vl)vl.textContent=z+'%';}}
-    var w=localStorage.getItem('rd_weight');
-    if(w){applyWeight(w);var sl=document.getElementById('weightSlider');if(sl)sl.value=w;}
+    var z=parseInt(localStorage.getItem('rd_zoom')||'100');
+    if(z&&z!==100)applyZoom(z);
+    var w=parseInt(localStorage.getItem('rd_weight')||'400');
+    if(w&&w!==400)applyWeight(w);
   }catch(e){}
 })();
 
